@@ -7,18 +7,31 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj2.command.*;
+
 
 /**
  * Add your docs here.
  */
-public class BallShooterSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+public class BallShooterSubsystem extends SubsystemBase {
+private Talon ballshooter = new Talon(5);
+private Boolean isshooting = false;
+  public void shoot(){
+    isshooting = true;
+  }
+  public void stop(){
+    isshooting = false;
+  }
 
   @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+  public void periodic() {
+    if(isshooting ){
+      ballshooter.set(1);
+    }
+    else{
+      ballshooter.set(0);
+    }
   }
+
 }

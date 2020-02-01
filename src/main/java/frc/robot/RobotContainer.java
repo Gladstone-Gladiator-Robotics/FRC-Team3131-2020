@@ -28,15 +28,16 @@ import edu.wpi.first.wpilibj.SPI;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem driveTrainSubsystem = new DrivetrainSubsystem();
+  private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   //private final ColorSensor m_colorSensorSubsystem = new ColorSensor();
   private XboxController controller = new XboxController(0);
   private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final TeleopDriveCommand m_autoCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
   private final GoStraightCommand goStraightCommand = new GoStraightCommand(driveTrainSubsystem, controller);  
-  JoystickButton aButton = new JoystickButton(controller, 1);
-  JoystickButton bButton = new JoystickButton(controller, 2);
-  JoystickButton xButton = new JoystickButton(controller, 3);
-  JoystickButton yButton = new JoystickButton(controller, 4);
+  private JoystickButton aButton = new JoystickButton(controller, 1);
+  private JoystickButton bButton = new JoystickButton(controller, 2);
+  private JoystickButton xButton = new JoystickButton(controller, 3);
+  private JoystickButton yButton = new JoystickButton(controller, 4);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -56,6 +57,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     xButton.toggleWhenActive(new TurnAroundCommand(driveTrainSubsystem, gyro));
     yButton.toggleWhenActive(goStraightCommand);
+    aButton
+      .whenPressed(() -> ballShooterSubsystem.shoot())
+      .whenReleased(() -> ballShooterSubsystem.stop());
   }
 
 
