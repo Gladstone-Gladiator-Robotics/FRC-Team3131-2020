@@ -1,6 +1,6 @@
 {
   "java.configuration.updateBuildConfiguration": "automatic",
-   "java.home": "C:\\Program Files\\Java\\jdk-11.0.5",
+   "java.home": "C:\\Program Files\\Java\\jdk-11.0.6",
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
