@@ -29,7 +29,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem driveTrainSubsystem = new DrivetrainSubsystem();
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
-  private final ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
+  private final ColorWheelSubsystem colorSensorSubsystem = new ColorWheelSubsystem();
   private XboxController controller = new XboxController(0);
   private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final TeleopDriveCommand m_autoCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
