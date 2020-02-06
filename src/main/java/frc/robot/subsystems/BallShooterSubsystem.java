@@ -26,7 +26,7 @@ private Boolean isshooting = false;
 
   @Override
   public void periodic() {
-    if(isshooting ){
+    if(isshooting == true){
       ballshooter.set(1);
     }
     else{

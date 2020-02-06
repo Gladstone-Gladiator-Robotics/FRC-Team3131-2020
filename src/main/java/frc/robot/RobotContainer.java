@@ -29,11 +29,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem driveTrainSubsystem = new DrivetrainSubsystem();
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
-  //private final ColorSensor m_colorSensorSubsystem = new ColorSensor();
+  private final ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
   private XboxController controller = new XboxController(0);
   private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final TeleopDriveCommand m_autoCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
   private final GoStraightCommand goStraightCommand = new GoStraightCommand(driveTrainSubsystem, controller);  
+  private final LimelightAimCommand limelightAimCommand = new LimelightAimCommand();
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
@@ -46,6 +47,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, m_autoCommand);
+    CommandScheduler.getInstance().registerSubsystem(colorSensorSubsystem);
   }  
 
   /**
@@ -60,6 +62,8 @@ public class RobotContainer {
     aButton
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
+
+    bButton.whenPressed(() -> limelightAimCommand.printData());
   }
 
 

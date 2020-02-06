@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-/*package frc.robot.subsystems;
+package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.I2C;
@@ -16,7 +16,7 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
 
-public class ColorSensor extends SubsystemBase {
+public class ColorSensorSubsystem extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch m_colorMatcher = new ColorMatch();
@@ -28,7 +28,7 @@ public class ColorSensor extends SubsystemBase {
   
   //Creates a new ExampleSubsystem.
    
-  public ColorSensor() {
+  public ColorSensorSubsystem() {
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
     m_colorMatcher.addColorMatch(kRedTarget);
@@ -37,6 +37,10 @@ public class ColorSensor extends SubsystemBase {
 
   @Override
   public void periodic() {
+    printColors();
+  }
+
+  public void printColors(){
     Color detectedColor = m_colorSensor.getColor();
 
     String colorString;
@@ -53,7 +57,6 @@ public class ColorSensor extends SubsystemBase {
     } else {
       colorString = "Unknown";
     }
-
     SmartDashboard.putNumber("Red", detectedColor.red);
     SmartDashboard.putNumber("Green", detectedColor.green);
     SmartDashboard.putNumber("Blue", detectedColor.blue);
@@ -61,4 +64,4 @@ public class ColorSensor extends SubsystemBase {
     SmartDashboard.putString("Detected Color", colorString);
     // This method will be called once per scheduler run
   }
-}*/
+}
