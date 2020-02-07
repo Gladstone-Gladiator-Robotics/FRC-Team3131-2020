@@ -8,9 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,24 +29,27 @@ import edu.wpi.first.wpilibj.SPI;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem driveTrainSubsystem = new DrivetrainSubsystem();
+  private final DrivetrainSubsystem driveTrainSubsystem;
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   private final ColorWheelSubsystem colorSensorSubsystem = new ColorWheelSubsystem();
   private XboxController controller = new XboxController(0);
   private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-  private final TeleopDriveCommand m_autoCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
-  private final GoStraightCommand goStraightCommand = new GoStraightCommand(driveTrainSubsystem, controller);  
+  private final TeleopDriveCommand m_autoCommand;
+  private final GoStraightCommand goStraightCommand;  
   private final LimelightAimCommand limelightAimCommand = new LimelightAimCommand();
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
   private JoystickButton yButton = new JoystickButton(controller, 4);
-
+  private final boolean isPracticeBot = (new DigitalInput(9)).get();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
+    SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot);
+    driveTrainSubsystem = new DrivetrainSubsystem();
+    m_autoCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
+    goStraightCommand = new GoStraightCommand(driveTrainSubsystem, controller);
     configureButtonBindings();
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, m_autoCommand);
     CommandScheduler.getInstance().registerSubsystem(colorSensorSubsystem);
