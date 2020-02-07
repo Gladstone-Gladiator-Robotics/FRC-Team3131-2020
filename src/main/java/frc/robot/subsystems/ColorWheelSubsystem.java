@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.Talon;
+
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
@@ -22,6 +24,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch m_colorMatcher = new ColorMatch();
+  private Talon motor = new Talon(4);
 
   private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
   private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
@@ -56,7 +59,14 @@ public class ColorWheelSubsystem extends SubsystemBase {
   public void periodic() {
     printColors();
   }
+  public void spin() {
+    motor.set(1);
+  }
 
+  public void stop(){
+    motor.set(0);
+  }
+  
   public void printColors(){
     Color detectedColor = m_colorSensor.getColor();
 
