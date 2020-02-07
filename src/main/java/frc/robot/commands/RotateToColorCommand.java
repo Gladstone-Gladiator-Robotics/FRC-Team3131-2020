@@ -45,5 +45,6 @@ public class RotateToColorCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     return (subsystem.getColor() == color);
+    // if sensor is jittery then this won't work
   }
 }
