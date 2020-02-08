@@ -30,12 +30,13 @@ import edu.wpi.first.wpilibj.SPI;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem driveTrainSubsystem;
+  private final SolenoidSubsystem solenoidSubsystem;
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   private final ColorWheelSubsystem colorSensorSubsystem = new ColorWheelSubsystem();
   private XboxController controller = new XboxController(0);
   private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final TeleopDriveCommand m_autoCommand;
-  private final GoStraightCommand goStraightCommand;  
+
   private final LimelightAimCommand limelightAimCommand = new LimelightAimCommand();
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
@@ -48,8 +49,8 @@ public class RobotContainer {
   public RobotContainer() {
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot);
     driveTrainSubsystem = new DrivetrainSubsystem();
+    solenoidSubsystem = new SolenoidSubsystem();
     m_autoCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
-    goStraightCommand = new GoStraightCommand(driveTrainSubsystem, controller);
     configureButtonBindings();
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, m_autoCommand);
     CommandScheduler.getInstance().registerSubsystem(colorSensorSubsystem);
@@ -62,8 +63,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoysticpixyLightskButton}.
    */
   private void configureButtonBindings() {
-    xButton.toggleWhenActive(new TurnAroundCommand(driveTrainSubsystem, gyro));
-    yButton.toggleWhenActive(goStraightCommand);
+    xButton.toggleWhenActive(new ExtendPistonCommand(solenoidSubsystem));
+    yButton.toggleWhenActive(new TurnAroundCommand(driveTrainSubsystem, gyro));
     aButton
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
