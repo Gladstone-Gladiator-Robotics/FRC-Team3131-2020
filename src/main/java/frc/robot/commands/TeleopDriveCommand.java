@@ -41,8 +41,8 @@ public class TeleopDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { 
-    m_subsystem.speed = 2 * controller.getY(Hand.kLeft);
-    m_subsystem.rotation = 4 * controller.getX(Hand.kLeft);
+    m_subsystem.speed = -0.5 * controller.getY(Hand.kLeft);
+    m_subsystem.rotation = 0.5 * controller.getX(Hand.kLeft);
   }
 
   // Called once the command ends or is interrupted.

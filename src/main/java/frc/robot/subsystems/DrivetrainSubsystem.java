@@ -12,20 +12,28 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.*;
-//import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.kinematics.*;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-  private Talon leftDrive1 = new Talon(0);
-  private Talon leftDrive2 = new Talon(1);
-  private Talon rightDrive1 = new Talon(2);
-  private Talon rightDrive2 = new Talon(3);
+  private  WPI_VictorSPX leftDrive2 = new  WPI_VictorSPX(1); //Left Back
+  private  WPI_TalonSRX rightDrive2 = new  WPI_TalonSRX(2); //Right Back
+  private  WPI_TalonSRX rightDrive1 = new  WPI_TalonSRX(3); //Right Front
+  private  WPI_TalonSRX leftDrive1 = new  WPI_TalonSRX(4); //Left Front
+  //private  Talon leftDrive1 = new Talon(0); //Left Back
+  //private  Talon leftDrive2 = new Talon(1); //Right Back
+  //private  Talon rightDrive1 = new Talon(2); //Right Front
+  //private  Talon rightDrive2 = new Talon(3); //Left Front
   private final SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftDrive1, leftDrive2);
   private final SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightDrive1, rightDrive2);
-  //DifferentialDrive driveTrain = new DifferentialDrive(leftGroup , rightGroup);
+  DifferentialDrive driveTrain = new DifferentialDrive(leftGroup , rightGroup);
   public double speed;
   public double rotation;
   Encoder rightEncoder = new Encoder(0, 1);
@@ -39,25 +47,26 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private static final double kEncoderResolution = 4096;
   private static final double kTransmissionFactor = 0.08974359;
   public DrivetrainSubsystem() {
-    rightGroup.setInverted(true);
-    leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution * kTransmissionFactor);
-    rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution * kTransmissionFactor);
-    leftEncoder.reset();
-    rightEncoder.reset();
+    //rightGroup.setInverted(true);
+    //leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution * kTransmissionFactor);
+    //rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution * kTransmissionFactor);
  
+    //leftEncoder.reset();
+    //rightEncoder.reset();
   }
 
-public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
-  final double leftFeedForward = feedforward.calculate(speeds.leftMetersPerSecond);
-  final double rightFeedForward = feedforward.calculate(speeds.rightMetersPerSecond);
-  final double leftOutput = leftPIDController.calculate(leftEncoder.getRate() , speeds.leftMetersPerSecond);
-  final double rightOutput = rightPIDController.calculate(rightEncoder.getRate() , speeds.rightMetersPerSecond);
-  leftGroup.setVoltage(leftOutput + leftFeedForward);
-  rightGroup.setVoltage(rightOutput + rightFeedForward);
+  public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
+    final double leftFeedForward = feedforward.calculate(speeds.leftMetersPerSecond);
+    final double rightFeedForward = feedforward.calculate(speeds.rightMetersPerSecond);
+    final double leftOutput = leftPIDController.calculate(leftEncoder.getRate() , speeds.leftMetersPerSecond);
+    final double rightOutput = rightPIDController.calculate(rightEncoder.getRate() , speeds.rightMetersPerSecond);
+    leftGroup.setVoltage(leftOutput + leftFeedForward);
+    rightGroup.setVoltage(rightOutput + rightFeedForward);
 }
 
   @Override
   public void periodic() { 
-    setSpeeds(kinematics.toWheelSpeeds(new ChassisSpeeds(speed, 0.0, rotation)));
+    //setSpeeds(kinematics.toWheelSpeeds(new ChassisSpeeds(speed, 0.0, rotation)));
+    driveTrain.arcadeDrive(speed, rotation);
   }
 }

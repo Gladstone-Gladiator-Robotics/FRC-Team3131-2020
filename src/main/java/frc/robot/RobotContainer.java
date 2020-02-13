@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.SPI;
 
-
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -29,17 +28,14 @@ import edu.wpi.first.wpilibj.SPI;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem driveTrainSubsystem;
-  private final SolenoidSubsystem solenoidSubsystem;
+  private final DrivetrainSubsystem driveTrainSubsystem= new DrivetrainSubsystem();
+  private final SolenoidSubsystem solenoidSubsystem= new SolenoidSubsystem();
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   private final ColorWheelSubsystem colorSensorSubsystem = new ColorWheelSubsystem();
   private XboxController controller = new XboxController(0);
   private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-  private final TeleopDriveCommand m_autoCommand;
-
-  private final LimelightAimCommand limelightAimCommand = new LimelightAimCommand();
+  private final TeleopDriveCommand TeleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
   private JoystickButton aButton = new JoystickButton(controller, 1);
-  private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
   private JoystickButton yButton = new JoystickButton(controller, 4);
   private final boolean isPracticeBot = (new DigitalInput(9)).get();
@@ -47,13 +43,10 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot);
-    driveTrainSubsystem = new DrivetrainSubsystem();
-    solenoidSubsystem = new SolenoidSubsystem();
-    m_autoCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
-    configureButtonBindings();
-    CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, m_autoCommand);
+    SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
+    CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, TeleopDriveCommand);
     CommandScheduler.getInstance().registerSubsystem(colorSensorSubsystem);
+    configureButtonBindings();
   }  
 
   /**
@@ -63,13 +56,11 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoysticpixyLightskButton}.
    */
   private void configureButtonBindings() {
-    xButton.toggleWhenActive(new ExtendPistonCommand(solenoidSubsystem));
-    yButton.toggleWhenActive(new TurnAroundCommand(driveTrainSubsystem, gyro));
+    //xButton.toggleWhenActive(new ExtendPistonCommand(solenoidSubsystem));
+    //yButton.toggleWhenActive(new TurnAroundCommand(driveTrainSubsystem, gyro));
     aButton
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
-
-    bButton.whenPressed(() -> limelightAimCommand.printData());
   }
 
 
@@ -80,6 +71,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return TeleopDriveCommand;
   }
 }
