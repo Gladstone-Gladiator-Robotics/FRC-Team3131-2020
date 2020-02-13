@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
 public class ExtendPistonCommand extends CommandBase {
-  private final SolenoidSubsystem subsystem;
+  private final IntakeSubsystem subsystem;
   /**
    * Creates a new ExtendPistonCommand.
    */
-  public ExtendPistonCommand(SolenoidSubsystem subsystem) {
+  public ExtendPistonCommand(IntakeSubsystem subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subsystem = subsystem;
     addRequirements(subsystem);
@@ -30,7 +30,7 @@ public class ExtendPistonCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.intakePiston.set(DoubleSolenoid.Value.kForward);
+    //subsystem.intakePiston.set(DoubleSolenoid.Value.kForward);
   }
 
   // Called once the command ends or is interrupted.

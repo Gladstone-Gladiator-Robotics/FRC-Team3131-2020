@@ -35,13 +35,14 @@ import edu.wpi.first.wpilibj.Talon;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem driveTrainSubsystem;
-  private final SolenoidSubsystem solenoidSubsystem= new SolenoidSubsystem();
+  private final IntakeSubsystem solenoidSubsystem = new IntakeSubsystem();
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   private final ColorWheelSubsystem colorSensorSubsystem = new ColorWheelSubsystem();
   private XboxController controller = new XboxController(0);
   private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final TeleopDriveCommand teleopDriveCommand;
   private JoystickButton aButton = new JoystickButton(controller, 1);
+  private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
   private JoystickButton yButton = new JoystickButton(controller, 4);
   private final boolean isPracticeBot = (new DigitalInput(9)).get();

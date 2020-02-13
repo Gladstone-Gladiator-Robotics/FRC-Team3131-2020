@@ -7,6 +7,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj2.command.*;
 
@@ -15,8 +18,17 @@ import edu.wpi.first.wpilibj2.command.*;
  * Add your docs here.
  */
 public class BallShooterSubsystem extends SubsystemBase {
-private Talon ballshooter = new Talon(5);
-private Boolean isshooting = false;
+  private SpeedController ballshooter;
+  private Boolean isshooting = false;
+
+  public BallShooterSubsystem(){
+    try{
+      ballshooter = new WPI_TalonSRX(7);
+    } catch(Exception e) {
+      ballshooter = new Talon(8);
+    }
+  }
+
   public void shoot(){
     isshooting = true;
   }
