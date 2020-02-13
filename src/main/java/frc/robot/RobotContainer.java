@@ -81,7 +81,8 @@ public class RobotContainer {
     aButton
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
-    bButton.whenPressed(new ExtendIntakeCommand(intakeSubsystem));
+      //Todo: USe D-Pad up/down for piston
+    bButton.whenPressed(new ExtendIntakeCommand(intakeSubsystem, true));
   }
 
 
