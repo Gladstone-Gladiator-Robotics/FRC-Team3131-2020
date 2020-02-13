@@ -10,7 +10,7 @@ import frc.robot.IntakeState;
 
 public class IntakeSubsystem extends SubsystemBase {
     private Compressor compressor;
-    private DoubleSolenoid intakePiston;
+    public DoubleSolenoid intakePiston;
     private SpeedController intakeMotor;
     private IntakeState state;
 

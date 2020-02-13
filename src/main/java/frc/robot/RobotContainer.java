@@ -35,7 +35,7 @@ import edu.wpi.first.wpilibj.Talon;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem driveTrainSubsystem;
-  private final IntakeSubsystem solenoidSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   private final ColorWheelSubsystem colorSensorSubsystem = new ColorWheelSubsystem();
   private XboxController controller = new XboxController(0);
@@ -81,6 +81,7 @@ public class RobotContainer {
     aButton
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
+    bButton.whenPressed(new ExtendIntakeCommand(intakeSubsystem));
   }
 
 
