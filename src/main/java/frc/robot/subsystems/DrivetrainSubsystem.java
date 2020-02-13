@@ -31,9 +31,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   //private  Talon leftDrive2 = new Talon(1); //Right Back
   //private  Talon rightDrive1 = new Talon(2); //Right Front
   //private  Talon rightDrive2 = new Talon(3); //Left Front
-  private final SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftDrive1, leftDrive2);
-  private final SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightDrive1, rightDrive2);
-  DifferentialDrive driveTrain = new DifferentialDrive(leftGroup , rightGroup);
+  private final SpeedController leftGroup;// = new SpeedControllerGroup(leftDrive1, leftDrive2);
+  private final SpeedController rightGroup;// = new SpeedControllerGroup(rightDrive1, rightDrive2);
+  private final DifferentialDrive driveTrain;
   public double speed;
   public double rotation;
   Encoder rightEncoder = new Encoder(0, 1);
@@ -46,7 +46,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private static final double kWheelRadius = 0.075; //in meters
   private static final double kEncoderResolution = 4096;
   private static final double kTransmissionFactor = 0.08974359;
-  public DrivetrainSubsystem() {
+  public DrivetrainSubsystem(SpeedController leftMotor, SpeedController rightMotor) {
+
+    driveTrain = new DifferentialDrive(leftMotor, rightMotor);
+    leftGroup = leftMotor;
+    rightGroup = rightMotor;
+
     //rightGroup.setInverted(true);
     //leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution * kTransmissionFactor);
     //rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution * kTransmissionFactor);

@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -19,6 +22,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Talon;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -28,13 +34,13 @@ import edu.wpi.first.wpilibj.SPI;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem driveTrainSubsystem= new DrivetrainSubsystem();
+  private final DrivetrainSubsystem driveTrainSubsystem;
   private final SolenoidSubsystem solenoidSubsystem= new SolenoidSubsystem();
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   private final ColorWheelSubsystem colorSensorSubsystem = new ColorWheelSubsystem();
   private XboxController controller = new XboxController(0);
   private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-  private final TeleopDriveCommand TeleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
+  private final TeleopDriveCommand teleopDriveCommand;
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton xButton = new JoystickButton(controller, 3);
   private JoystickButton yButton = new JoystickButton(controller, 4);
@@ -43,8 +49,21 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    if(isPracticeBot == false){ 
+      WPI_VictorSPX leftDrive2 = new  WPI_VictorSPX(1); //Left Back
+      WPI_TalonSRX rightDrive2 = new  WPI_TalonSRX(2); //Right Back
+      WPI_TalonSRX rightDrive1 = new  WPI_TalonSRX(3); //Right Front
+      WPI_TalonSRX leftDrive1 = new  WPI_TalonSRX(4); //Left Front
+      SpeedController leftMotor = new SpeedControllerGroup(leftDrive1, leftDrive2);
+      SpeedController rightMotor = new SpeedControllerGroup(rightDrive1, rightDrive2);
+      driveTrainSubsystem = new DrivetrainSubsystem(leftMotor, rightMotor);
+    } else{
+      driveTrainSubsystem = new DrivetrainSubsystem(new Talon(0), new Talon(1));
+    }
+    teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
+
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
-    CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, TeleopDriveCommand);
+    CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
     CommandScheduler.getInstance().registerSubsystem(colorSensorSubsystem);
     configureButtonBindings();
   }  
@@ -71,6 +90,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return TeleopDriveCommand;
+    return teleopDriveCommand;
   }
 }
