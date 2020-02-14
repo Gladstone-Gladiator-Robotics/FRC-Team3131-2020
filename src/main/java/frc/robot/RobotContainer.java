@@ -35,7 +35,7 @@ import edu.wpi.first.wpilibj.Talon;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem driveTrainSubsystem;
-  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   private final ColorWheelSubsystem colorSensorSubsystem = new ColorWheelSubsystem();
   private XboxController controller = new XboxController(0);
@@ -76,13 +76,13 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoysticpixyLightskButton}.
    */
   private void configureButtonBindings() {
-    //xButton.toggleWhenActive(new ExtendPistonCommand(solenoidSubsystem));
     //yButton.toggleWhenActive(new TurnAroundCommand(driveTrainSubsystem, gyro));
     aButton
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
       //Todo: USe D-Pad up/down for piston
-    bButton.whenPressed(new ExtendIntakeCommand(intakeSubsystem, true));
+   //bButton.whenPressed(new ExtendIntakeCommand(intakeSubsystem, true));
+    xButton.whileHeld(new LimelightAimCommand(driveTrainSubsystem));
   }
 
 

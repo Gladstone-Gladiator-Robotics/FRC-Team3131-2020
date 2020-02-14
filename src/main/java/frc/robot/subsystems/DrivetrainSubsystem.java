@@ -16,23 +16,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.kinematics.*;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-  private  WPI_VictorSPX leftDrive2 = new  WPI_VictorSPX(1); //Left Back
-  private  WPI_TalonSRX rightDrive2 = new  WPI_TalonSRX(2); //Right Back
-  private  WPI_TalonSRX rightDrive1 = new  WPI_TalonSRX(3); //Right Front
-  private  WPI_TalonSRX leftDrive1 = new  WPI_TalonSRX(4); //Left Front
-  //private  Talon leftDrive1 = new Talon(0); //Left Back
-  //private  Talon leftDrive2 = new Talon(1); //Right Back
-  //private  Talon rightDrive1 = new Talon(2); //Right Front
-  //private  Talon rightDrive2 = new Talon(3); //Left Front
-  private final SpeedController leftGroup;// = new SpeedControllerGroup(leftDrive1, leftDrive2);
-  private final SpeedController rightGroup;// = new SpeedControllerGroup(rightDrive1, rightDrive2);
+  private final SpeedController leftGroup;
+  private final SpeedController rightGroup;
   private final DifferentialDrive driveTrain;
   public double speed;
   public double rotation;
