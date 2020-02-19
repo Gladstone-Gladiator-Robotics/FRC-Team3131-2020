@@ -37,9 +37,10 @@ public class RobotContainer {
   private final DrivetrainSubsystem driveTrainSubsystem;
   //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
-  private final ColorWheelSubsystem colorSensorSubsystem = new ColorWheelSubsystem();
+  private final ColorWheelSubsystem colorWheelSubsystem;
   private XboxController controller = new XboxController(0);
   private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+  private WheelColor wheelColor;
   private final TeleopDriveCommand teleopDriveCommand;
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
@@ -61,11 +62,12 @@ public class RobotContainer {
     } else{
       driveTrainSubsystem = new DrivetrainSubsystem(new Talon(0), new Talon(1));
     }
+    colorWheelSubsystem = new ColorWheelSubsystem();
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
 
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
-    CommandScheduler.getInstance().registerSubsystem(colorSensorSubsystem);
+    CommandScheduler.getInstance().registerSubsystem(colorWheelSubsystem);
     configureButtonBindings();
   }  
 
@@ -80,9 +82,10 @@ public class RobotContainer {
     aButton
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
-      //Todo: USe D-Pad up/down for piston
-   //bButton.whenPressed(new ExtendIntakeCommand(intakeSubsystem, true));
-    xButton.whileHeld(new LimelightAimCommand(driveTrainSubsystem));
+    // Todo: USe D-Pad up/down for piston
+    bButton.whenHeld(new RotateToColorCommand(wheelColor, colorWheelSubsystem));
+    xButton.toggleWhenPressed(new LimelightAimCommand(driveTrainSubsystem));
+    yButton.toggleWhenPressed(new TurnAroundCommand(driveTrainSubsystem, gyro));
   }
 
 

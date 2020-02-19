@@ -44,7 +44,7 @@ public class TurnAroundCommand extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.speed = 0;
-    m_subsystem.rotation = 3;
+    m_subsystem.rotation = -0.55;
 
   }
 

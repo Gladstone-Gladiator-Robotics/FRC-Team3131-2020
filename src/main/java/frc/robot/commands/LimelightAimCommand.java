@@ -47,6 +47,7 @@ public class LimelightAimCommand extends CommandBase {
   public void end(boolean interrupted) {
     driveTrain.speed = 0;
     driveTrain.rotation = 0;
+    System.out.println("done");
   }
 
   // Returns true when the command should end.
@@ -57,10 +58,10 @@ public class LimelightAimCommand extends CommandBase {
 
   public void Update_Limelight_Tracking(){
     // These numbers must be tuned for your Robot!  Be careful!
-    final double STEER_K = -0.03;                    // how hard to turn toward the target
-    final double DRIVE_K = 0.26;                    // how hard to drive fwd toward the target
+    final double STEER_K = -0.02;                    // how hard to turn toward the target
+    final double DRIVE_K = 0.5;                    // how hard to drive fwd toward the target
     final double DESIRED_TARGET_AREA = 13.0;        // Area of the target when the robot reaches the wall
-    final double MAX_DRIVE = 0.7;                   // Simple speed limit so we don't drive too fast
+    final double MAX_DRIVE = .6;                   // Simple speed limit so we don't drive too fast
 
     double tv = NetworkTableInstance.getDefault().getTable("limelight-ghs").getEntry("tv").getDouble(0);
     double tx = NetworkTableInstance.getDefault().getTable("limelight-ghs").getEntry("tx").getDouble(0);
@@ -69,14 +70,9 @@ public class LimelightAimCommand extends CommandBase {
 
     if (tv < 0.5){
       driveTrain.speed = 0;
-      driveTrain.rotation = 0.5;
-      System.out.println("Rotating");
-    } else if(Math.abs(tx) <= 7) {
-      System.out.println("Jamie");
-      isFinished = true;
-    } else {
+      driveTrain.rotation = 0.55;
+    }  else if(ta < DESIRED_TARGET_AREA){
       // Start with proportional steering
-      System.out.println("Kyler");
       double steer_cmd = tx * STEER_K;
       driveTrain.rotation = steer_cmd;
 
@@ -87,7 +83,10 @@ public class LimelightAimCommand extends CommandBase {
       if (drive_cmd > MAX_DRIVE){
             drive_cmd = MAX_DRIVE;
       }
-      driveTrain.speed = 0;
+      driveTrain.speed = drive_cmd;
+      if (ta >= DESIRED_TARGET_AREA){
+        isFinished = true;
+      }
     }
   }
 

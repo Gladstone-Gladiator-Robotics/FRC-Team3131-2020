@@ -60,7 +60,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
     printColors();
   }
   public void spin() {
-    motor.set(1);
+    motor.set(0.75);
   }
 
   public void stop(){

@@ -16,8 +16,9 @@ public class RotateToColorCommand extends CommandBase {
   private WheelColor color;
   /**
    * Creates a new RotateToColorCommand.
+ * @param green
    */
-  public RotateToColorCommand(WheelColor color, ColorWheelSubsystem subsystem) {
+  public RotateToColorCommand(WheelColor green, ColorWheelSubsystem subsystem) {
     this.color = color;
     this.subsystem = subsystem;
     addRequirements(subsystem);
