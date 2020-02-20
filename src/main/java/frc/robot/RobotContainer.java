@@ -83,7 +83,7 @@ public class RobotContainer {
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
     // Todo: USe D-Pad up/down for piston
-    bButton.whenHeld(new RotateToColorCommand(wheelColor, colorWheelSubsystem));
+    bButton.toggleWhenPressed(new RotateToColorCommand(wheelColor, colorWheelSubsystem));
     xButton.toggleWhenPressed(new LimelightAimCommand(driveTrainSubsystem));
     yButton.toggleWhenPressed(new TurnAroundCommand(driveTrainSubsystem, gyro));
   }

@@ -11,6 +11,7 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * An example command that uses an example subsystem.
@@ -18,7 +19,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class TeleopDriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DrivetrainSubsystem m_subsystem;
-  private final XboxController controller;
+  private final XboxController controller = new XboxController(0);
+  private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
   public double speed;
   /**
    * Creates a new ExampleCommand.
@@ -27,7 +29,6 @@ public class TeleopDriveCommand extends CommandBase {
    */
   public TeleopDriveCommand(DrivetrainSubsystem subsystem, XboxController controller) {
     m_subsystem = subsystem;
-    this.controller = controller;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -41,8 +42,14 @@ public class TeleopDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { 
-    m_subsystem.speed =  -0.7 * controller.getY(Hand.kLeft);
-    m_subsystem.rotation = -0.7 * controller.getX(Hand.kLeft);
+    if(leftJoystickButton.get()){
+      m_subsystem.speed = -controller.getY(Hand.kLeft);
+      m_subsystem.rotation = -controller.getX(Hand.kLeft);
+    } 
+    else{
+      m_subsystem.speed =  -0.7 * controller.getY(Hand.kLeft);
+      m_subsystem.rotation = -0.7 * controller.getX(Hand.kLeft);
+    }
   }
 
   // Called once the command ends or is interrupted.
