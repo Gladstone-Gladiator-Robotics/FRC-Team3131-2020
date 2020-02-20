@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeSubsystem extends SubsystemBase {
     private Compressor compressor;
     public DoubleSolenoid intakePiston;
-    private SpeedController intakeMotor;
+    public final SpeedController intakeMotor;
 
     public IntakeSubsystem() {
         intakeMotor = new Talon(6);
