@@ -35,7 +35,7 @@ import edu.wpi.first.wpilibj.Talon;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem driveTrainSubsystem;
-  //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private IntakeSubsystem intakeSubsystem;
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   private final ColorWheelSubsystem colorWheelSubsystem;
   private XboxController controller = new XboxController(0);
@@ -46,6 +46,8 @@ public class RobotContainer {
   private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
   private JoystickButton yButton = new JoystickButton(controller, 4);
+  private JoystickButton leftBumper = new JoystickButton(controller, 5);
+  private JoystickButton rightBumper = new JoystickButton(controller, 6);
   private final boolean isPracticeBot = (new DigitalInput(9)).get();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -58,9 +60,11 @@ public class RobotContainer {
       WPI_TalonSRX leftDrive1 = new  WPI_TalonSRX(4); //Left Front
       SpeedController leftMotor = new SpeedControllerGroup(leftDrive1, leftDrive2);
       SpeedController rightMotor = new SpeedControllerGroup(rightDrive1, rightDrive2);
+      intakeSubsystem = new IntakeSubsystem();
       driveTrainSubsystem = new DrivetrainSubsystem(leftMotor, rightMotor);
     } else{
       driveTrainSubsystem = new DrivetrainSubsystem(new Talon(0), new Talon(1));
+      intakeSubsystem = null;
     }
     colorWheelSubsystem = new ColorWheelSubsystem();
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
@@ -78,14 +82,16 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoysticpixyLightskButton}.
    */
   private void configureButtonBindings() {
-    //yButton.toggleWhenActive(new TurnAroundCommand(driveTrainSubsystem, gyro));
     aButton
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
     // Todo: USe D-Pad up/down for piston
     bButton.toggleWhenPressed(new RotateToColorCommand(wheelColor, colorWheelSubsystem));
     xButton.toggleWhenPressed(new LimelightAimCommand(driveTrainSubsystem));
-    yButton.toggleWhenPressed(new TurnAroundCommand(driveTrainSubsystem, gyro));
+    if (isPracticeBot == false){
+      leftBumper.whenPressed( new ExtendIntakeCommand(intakeSubsystem, true));
+      rightBumper.whenPressed( new ExtendIntakeCommand(intakeSubsystem, false));
+    }
   }
 
 
