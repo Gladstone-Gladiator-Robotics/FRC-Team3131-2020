@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,6 +43,15 @@ public class RobotContainer {
   private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private WheelColor wheelColor;
   private final TeleopDriveCommand teleopDriveCommand;
+  private final RotateToColorCommand rotateToColorCommand;
+  private final LimelightAimCommand limelightAimCommand;
+  private final RotateColorWheelThreeTimesCommand rotateColorWheelThreeTimesCommand;
+  Joystick joystick = new Joystick(0);
+  int dPadValue;
+  final float dPadUp = 0;
+  final float dPadRight = 90;
+  final float dPadDown = 180;
+  final float dPadLeft = 270;
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
@@ -60,6 +70,7 @@ public class RobotContainer {
       WPI_TalonSRX leftDrive1 = new  WPI_TalonSRX(4); //Left Front
       SpeedController leftMotor = new SpeedControllerGroup(leftDrive1, leftDrive2);
       SpeedController rightMotor = new SpeedControllerGroup(rightDrive1, rightDrive2);
+      dPadValue = joystick.getPOV();
       intakeSubsystem = new IntakeSubsystem();
       driveTrainSubsystem = new DrivetrainSubsystem(leftMotor, rightMotor);
     } else{
@@ -67,7 +78,11 @@ public class RobotContainer {
       intakeSubsystem = null;
     }
     colorWheelSubsystem = new ColorWheelSubsystem();
+
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
+    rotateToColorCommand = new RotateToColorCommand(wheelColor, colorWheelSubsystem);
+    limelightAimCommand = new LimelightAimCommand(driveTrainSubsystem);
+    rotateColorWheelThreeTimesCommand = new RotateColorWheelThreeTimesCommand(colorWheelSubsystem);
 
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
@@ -86,12 +101,22 @@ public class RobotContainer {
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
     // Todo: USe D-Pad up/down for piston
-    bButton.toggleWhenPressed(new RotateToColorCommand(wheelColor, colorWheelSubsystem));
-    xButton.toggleWhenPressed(new LimelightAimCommand(driveTrainSubsystem));
+    bButton.toggleWhenPressed(rotateToColorCommand);
+    xButton.toggleWhenPressed(limelightAimCommand);
+    yButton.toggleWhenPressed(rotateColorWheelThreeTimesCommand);
     if (isPracticeBot == false){
       leftBumper.whenPressed( new ExtendIntakeCommand(intakeSubsystem, true));
       rightBumper.whenPressed( new ExtendIntakeCommand(intakeSubsystem, false));
+    } 
+    else{
+      if (dPadValue == dPadUp){
+        new ExtendIntakeCommand(intakeSubsystem, true);
+      }
+      if (dPadValue == dPadDown){
+        new ExtendIntakeCommand(intakeSubsystem, false);
+      }
     }
+   
   }
 
 
@@ -102,6 +127,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
+    return getTeleopCommand();
+  }
+
+  public Command getTeleopCommand(){
     return teleopDriveCommand;
   }
 }

@@ -34,6 +34,7 @@ public class ExtendIntakeCommand extends CommandBase {
   public void execute() {
    if(extend == true){
     subsystem.intakePiston.set(DoubleSolenoid.Value.kForward);
+    
    } else{
     subsystem.intakePiston.set(DoubleSolenoid.Value.kReverse);
    }
