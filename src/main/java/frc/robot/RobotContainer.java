@@ -98,9 +98,7 @@ public class RobotContainer {
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
     // Todo: USe D-Pad up/down for piston
-    bButton
-      .whenPressed(() -> climbSubsystem.climb())
-      .whenReleased(() -> climbSubsystem.stop());
+    bButton.whenHeld(new ClimbCommand(climbSubsystem));
     xButton.toggleWhenPressed(limelightAimCommand);
     yButton.toggleWhenPressed(rotateColorWheelThreeTimesCommand);
     if (isPracticeBot == false){
