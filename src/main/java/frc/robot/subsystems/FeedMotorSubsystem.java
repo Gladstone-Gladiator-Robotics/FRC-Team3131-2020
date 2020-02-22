@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -10,35 +10,28 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
-/**
- * Add your docs here.
- */
-public class BallShooterSubsystem extends SubsystemBase {
-  private final SpeedController ballshooter;
-  private Boolean isshooting = false;
-
-  public BallShooterSubsystem(){
-    ballshooter = new WPI_TalonSRX(7);
+public class FeedMotorSubsystem extends SubsystemBase {
+  private final SpeedController feedMotor;
+  private boolean running = false;
+  public FeedMotorSubsystem() {
+    feedMotor = new WPI_TalonSRX(8);
   }
 
-  public void shoot(){
-    isshooting = true;
+  public void start(){
+    running = true;
   }
   public void stop(){
-    isshooting = false;
+    running = false;
   }
 
   @Override
   public void periodic() {
-    if(isshooting == true){
-      ballshooter.setVoltage(11);
-    }
-    else{
-      ballshooter.set(0);
+    if (running == true){
+      feedMotor.set(0.7);
+    } else {
+      feedMotor.set(0);
     }
   }
-
 }

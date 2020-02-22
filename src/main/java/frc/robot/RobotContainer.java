@@ -10,19 +10,15 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Talon;
@@ -39,25 +35,25 @@ public class RobotContainer {
   private IntakeSubsystem intakeSubsystem;
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   private final ColorWheelSubsystem colorWheelSubsystem;
+  private final ClimbSubsystem climbSubsystem;
+  private final FeedMotorSubsystem feedMotorSubsystem;
   private XboxController controller = new XboxController(0);
-  private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+  //private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private WheelColor wheelColor;
   private final TeleopDriveCommand teleopDriveCommand;
   private final RotateToColorCommand rotateToColorCommand;
   private final LimelightAimCommand limelightAimCommand;
   private final RotateColorWheelThreeTimesCommand rotateColorWheelThreeTimesCommand;
-  Joystick joystick = new Joystick(0);
-  int dPadValue;
-  final float dPadUp = 0;
-  final float dPadRight = 90;
-  final float dPadDown = 180;
-  final float dPadLeft = 270;
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
   private JoystickButton yButton = new JoystickButton(controller, 4);
   private JoystickButton leftBumper = new JoystickButton(controller, 5);
   private JoystickButton rightBumper = new JoystickButton(controller, 6);
+  /*private JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
+  private JoystickButton rightMiddleButton = new JoystickButton(controller, 8);
+  private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
+  private JoystickButton rightJoystickButton = new JoystickButton(controller, 10);*/
   private final boolean isPracticeBot = (new DigitalInput(9)).get();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -70,7 +66,6 @@ public class RobotContainer {
       WPI_TalonSRX leftDrive1 = new  WPI_TalonSRX(4); //Left Front
       SpeedController leftMotor = new SpeedControllerGroup(leftDrive1, leftDrive2);
       SpeedController rightMotor = new SpeedControllerGroup(rightDrive1, rightDrive2);
-      dPadValue = joystick.getPOV();
       intakeSubsystem = new IntakeSubsystem();
       driveTrainSubsystem = new DrivetrainSubsystem(leftMotor, rightMotor);
     } else{
@@ -78,6 +73,8 @@ public class RobotContainer {
       intakeSubsystem = null;
     }
     colorWheelSubsystem = new ColorWheelSubsystem();
+    climbSubsystem = new ClimbSubsystem();
+    feedMotorSubsystem = new FeedMotorSubsystem();
 
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
     rotateToColorCommand = new RotateToColorCommand(wheelColor, colorWheelSubsystem);
@@ -101,22 +98,15 @@ public class RobotContainer {
       .whenPressed(() -> ballShooterSubsystem.shoot())
       .whenReleased(() -> ballShooterSubsystem.stop());
     // Todo: USe D-Pad up/down for piston
-    bButton.toggleWhenPressed(rotateToColorCommand);
+    bButton
+      .whenPressed(() -> climbSubsystem.climb())
+      .whenReleased(() -> climbSubsystem.stop());
     xButton.toggleWhenPressed(limelightAimCommand);
     yButton.toggleWhenPressed(rotateColorWheelThreeTimesCommand);
     if (isPracticeBot == false){
       leftBumper.whenPressed( new ExtendIntakeCommand(intakeSubsystem, true));
       rightBumper.whenPressed( new ExtendIntakeCommand(intakeSubsystem, false));
-    } 
-    else{
-      if (dPadValue == dPadUp){
-        new ExtendIntakeCommand(intakeSubsystem, true);
-      }
-      if (dPadValue == dPadDown){
-        new ExtendIntakeCommand(intakeSubsystem, false);
-      }
-    }
-   
+    }  
   }
 
 
