@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.*;
 
 
@@ -17,11 +18,12 @@ import edu.wpi.first.wpilibj2.command.*;
  * Add your docs here.
  */
 public class BallShooterSubsystem extends SubsystemBase {
-  private final SpeedController ballshooter;
+  private final WPI_TalonSRX ballShooter;
   private Boolean isshooting = false;
 
   public BallShooterSubsystem(){
-    ballshooter = new WPI_TalonSRX(7);
+    ballShooter = new WPI_TalonSRX(7);
+    SendableRegistry.setName(ballShooter, "ballShooter");
   }
 
   public void shoot(){
@@ -34,10 +36,10 @@ public class BallShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if(isshooting == true){
-      ballshooter.setVoltage(11);
+      ballShooter.setVoltage(11);
     }
     else{
-      ballshooter.set(0);
+      ballShooter.set(0);
     }
   }
 

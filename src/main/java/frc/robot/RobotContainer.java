@@ -44,6 +44,7 @@ public class RobotContainer {
   private final RotateToColorCommand rotateToColorCommand;
   private final LimelightAimCommand limelightAimCommand;
   private final RotateColorWheelThreeTimesCommand rotateColorWheelThreeTimesCommand;
+  private final BallShooterCommand ballShooterCommand;
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
@@ -80,6 +81,7 @@ public class RobotContainer {
     rotateToColorCommand = new RotateToColorCommand(wheelColor, colorWheelSubsystem);
     limelightAimCommand = new LimelightAimCommand(driveTrainSubsystem);
     rotateColorWheelThreeTimesCommand = new RotateColorWheelThreeTimesCommand(colorWheelSubsystem);
+    ballShooterCommand = new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
 
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
@@ -94,9 +96,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoysticpixyLightskButton}.
    */
   private void configureButtonBindings() {
-    aButton
-      .whenPressed(() -> ballShooterSubsystem.shoot())
-      .whenReleased(() -> ballShooterSubsystem.stop());
+    aButton.toggleWhenActive(ballShooterCommand);
     // Todo: USe D-Pad up/down for piston
     bButton.whenHeld(new ClimbCommand(climbSubsystem));
     xButton.toggleWhenPressed(limelightAimCommand);

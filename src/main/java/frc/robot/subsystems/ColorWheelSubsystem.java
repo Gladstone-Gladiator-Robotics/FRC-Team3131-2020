@@ -9,13 +9,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.Talon;
 
-
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorMatch;
 
 import frc.robot.WheelColor;
@@ -23,7 +24,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch m_colorMatcher = new ColorMatch();
-  private Talon motor = new Talon(4);
+  private WPI_TalonSRX colorWheelMotor = new WPI_TalonSRX(6);
 
   private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
   private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
@@ -37,6 +38,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
     m_colorMatcher.addColorMatch(kGreenTarget);
     m_colorMatcher.addColorMatch(kRedTarget);
     m_colorMatcher.addColorMatch(kYellowTarget);
+    SendableRegistry.setName(colorWheelMotor, "colorWheelMotor");
   }
   public WheelColor getColor(){
     Color detectedColor = m_colorSensor.getColor();
@@ -59,11 +61,11 @@ public class ColorWheelSubsystem extends SubsystemBase {
     printColors();
   }
   public void spin() {
-    motor.set(0.75);
+    colorWheelMotor.set(0.75);
   }
 
   public void stop(){
-    motor.set(0);
+    colorWheelMotor.set(0);
   }
   
   public void printColors(){
