@@ -39,9 +39,7 @@ public class RobotContainer {
   private final FeedMotorSubsystem feedMotorSubsystem;
   private XboxController controller = new XboxController(0);
   //private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-  private WheelColor wheelColor;
   private final TeleopDriveCommand teleopDriveCommand;
-  private final RotateToColorCommand rotateToColorCommand;
   private final LimelightAimCommand limelightAimCommand;
   private final RotateColorWheelThreeTimesCommand rotateColorWheelThreeTimesCommand;
   private final BallShooterCommand ballShooterCommand;
@@ -51,6 +49,7 @@ public class RobotContainer {
   private JoystickButton yButton = new JoystickButton(controller, 4);
   private JoystickButton leftBumper = new JoystickButton(controller, 5);
   private JoystickButton rightBumper = new JoystickButton(controller, 6);
+  private DirectionalPad dPad = new DirectionalPad(controller);
   /*private JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
   private JoystickButton rightMiddleButton = new JoystickButton(controller, 8);
   private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
@@ -59,6 +58,7 @@ public class RobotContainer {
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
+  
   public RobotContainer() {
     if(isPracticeBot == false){ 
       WPI_VictorSPX leftDrive2 = new  WPI_VictorSPX(1); //Left Back
@@ -78,7 +78,6 @@ public class RobotContainer {
     feedMotorSubsystem = new FeedMotorSubsystem();
 
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
-    rotateToColorCommand = new RotateToColorCommand(wheelColor, colorWheelSubsystem);
     limelightAimCommand = new LimelightAimCommand(driveTrainSubsystem);
     rotateColorWheelThreeTimesCommand = new RotateColorWheelThreeTimesCommand(colorWheelSubsystem);
     ballShooterCommand = new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
@@ -96,7 +95,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoysticpixyLightskButton}.
    */
   private void configureButtonBindings() {
-    aButton.toggleWhenActive(ballShooterCommand);
+    aButton.whenHeld(ballShooterCommand);
     // Todo: USe D-Pad up/down for piston
     bButton.whenHeld(new ClimbCommand(climbSubsystem));
     xButton.toggleWhenPressed(limelightAimCommand);

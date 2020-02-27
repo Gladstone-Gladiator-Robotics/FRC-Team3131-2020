@@ -15,7 +15,7 @@ import frc.robot.subsystems.FeedMotorSubsystem;
 public class BallShooterCommand extends CommandBase {
   private final BallShooterSubsystem ballSystem;
   private final FeedMotorSubsystem feedSystem;
-  int time = (int) CommandScheduler.getInstance().timeSinceScheduled(this);
+  private int time;
   public BallShooterCommand(BallShooterSubsystem ballSystem, FeedMotorSubsystem feedSystem) {
     this.ballSystem = ballSystem;
     this.feedSystem = feedSystem;
@@ -25,15 +25,17 @@ public class BallShooterCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    time = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(time);
-    if(time < 2000){
+    System.out.println("Time: " + time);
+    if(time < 100){
       ballSystem.shoot();
-    }else if(time > 2000){
+      time += 1;
+    }else{
       feedSystem.start();
     }
   }
