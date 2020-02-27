@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -29,7 +30,7 @@ public class FeedMotorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if (running == true){
-      feedMotor.set(0.7);
+      feedMotor.set(1);
     } else {
       feedMotor.set(0);
     }

@@ -47,7 +47,7 @@ public class RobotContainer {
   private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
   private JoystickButton yButton = new JoystickButton(controller, 4);
-  //private JoystickButton leftBumper = new JoystickButton(controller, 5);
+  private JoystickButton leftBumper = new JoystickButton(controller, 5);
   //private JoystickButton rightBumper = new JoystickButton(controller, 6);
   private DirectionalPad dPad = new DirectionalPad(controller);
   /*private JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
@@ -99,8 +99,9 @@ public class RobotContainer {
     bButton.whenHeld(new ClimbCommand(climbSubsystem));
     xButton.toggleWhenPressed(limelightAimCommand);
     yButton.toggleWhenPressed(rotateColorWheelThreeTimesCommand);
-    dPad.down.toggleWhenActive( new ExtendIntakeCommand(intakeSubsystem, true));
-    dPad.up.toggleWhenActive( new ExtendIntakeCommand(intakeSubsystem, false));
+    dPad.down.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, true));
+    dPad.up.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, false));
+    leftBumper.toggleWhenActive(new IntakeMotorCommand(intakeSubsystem, feedMotorSubsystem));
   }
 
 
