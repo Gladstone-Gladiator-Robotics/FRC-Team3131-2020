@@ -47,8 +47,8 @@ public class RobotContainer {
   private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
   private JoystickButton yButton = new JoystickButton(controller, 4);
-  private JoystickButton leftBumper = new JoystickButton(controller, 5);
-  private JoystickButton rightBumper = new JoystickButton(controller, 6);
+  //private JoystickButton leftBumper = new JoystickButton(controller, 5);
+  //private JoystickButton rightBumper = new JoystickButton(controller, 6);
   private DirectionalPad dPad = new DirectionalPad(controller);
   /*private JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
   private JoystickButton rightMiddleButton = new JoystickButton(controller, 8);
@@ -67,12 +67,11 @@ public class RobotContainer {
       WPI_TalonSRX leftDrive1 = new  WPI_TalonSRX(4); //Left Front
       SpeedController leftMotor = new SpeedControllerGroup(leftDrive1, leftDrive2);
       SpeedController rightMotor = new SpeedControllerGroup(rightDrive1, rightDrive2);
-      intakeSubsystem = new IntakeSubsystem();
       driveTrainSubsystem = new DrivetrainSubsystem(leftMotor, rightMotor);
     } else{
       driveTrainSubsystem = new DrivetrainSubsystem(new Talon(0), new Talon(1));
-      intakeSubsystem = null;
     }
+    intakeSubsystem = new IntakeSubsystem();
     colorWheelSubsystem = new ColorWheelSubsystem();
     climbSubsystem = new ClimbSubsystem();
     feedMotorSubsystem = new FeedMotorSubsystem();
@@ -100,10 +99,8 @@ public class RobotContainer {
     bButton.whenHeld(new ClimbCommand(climbSubsystem));
     xButton.toggleWhenPressed(limelightAimCommand);
     yButton.toggleWhenPressed(rotateColorWheelThreeTimesCommand);
-    if (isPracticeBot == false){
-      leftBumper.whenPressed( new ExtendIntakeCommand(intakeSubsystem, true));
-      rightBumper.whenPressed( new ExtendIntakeCommand(intakeSubsystem, false));
-    }  
+    dPad.down.toggleWhenActive( new ExtendIntakeCommand(intakeSubsystem, true));
+    dPad.up.toggleWhenActive( new ExtendIntakeCommand(intakeSubsystem, false));
   }
 
 

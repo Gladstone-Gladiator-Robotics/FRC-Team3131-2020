@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.BallShooterSubsystem;
 import frc.robot.subsystems.FeedMotorSubsystem;
 
@@ -31,7 +30,6 @@ public class BallShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Time: " + time);
     if(time < 100){
       ballSystem.shoot();
       time += 1;

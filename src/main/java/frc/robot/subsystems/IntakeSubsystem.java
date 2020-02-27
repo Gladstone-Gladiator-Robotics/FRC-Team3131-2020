@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase{
     private Compressor compressor;
     public DoubleSolenoid intakePiston;
     public final Talon intakeMotor;
