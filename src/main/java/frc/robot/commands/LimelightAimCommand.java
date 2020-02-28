@@ -10,22 +10,25 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class LimelightAimCommand extends CommandBase {
   private final DrivetrainSubsystem driveTrain;
+  private final XboxController controller;
   private boolean isFinished = false;
   /**
    * Creates a new LimelightAimCommand.
    */
-  public LimelightAimCommand(DrivetrainSubsystem driveTrain) {
+  public LimelightAimCommand(DrivetrainSubsystem driveTrain, XboxController controller) {
     this.driveTrain = driveTrain;
+    this.controller = controller;
     addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Initialize");
     isFinished = false;
   }
 
@@ -33,10 +36,6 @@ public class LimelightAimCommand extends CommandBase {
   @Override
   public void execute() {
     Update_Limelight_Tracking();
-    printData();
-  }
-
-  public void printData() {
   }
 
   // Called once the command ends or is interrupted.
@@ -44,7 +43,6 @@ public class LimelightAimCommand extends CommandBase {
   public void end(boolean interrupted) {
     driveTrain.speed = 0;
     driveTrain.rotation = 0;
-    System.out.println("done");
   }
 
   // Returns true when the command should end.
@@ -60,7 +58,6 @@ public class LimelightAimCommand extends CommandBase {
     final double DESIRED_TARGET_AREA = 16.0;        // Area of the target when the robot reaches the wall
     final double MAX_DRIVE = -0.55; 
     final double MAX_STEER = 0.55;                  // Simple speed limit so we don't drive too fast
-
     double tv = NetworkTableInstance.getDefault().getTable("limelight-ghs").getEntry("tv").getDouble(0);
     double tx = NetworkTableInstance.getDefault().getTable("limelight-ghs").getEntry("tx").getDouble(0);
     //double ty = NetworkTableInstance.getDefault().getTable("limelight-ghs").getEntry("ty").getDouble(0);
@@ -85,6 +82,7 @@ public class LimelightAimCommand extends CommandBase {
       }
       driveTrain.speed = drive_cmd;
       if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= 2){
+        controller.setRumble(RumbleType.kLeftRumble, 1);
         isFinished = true;
       }
     }

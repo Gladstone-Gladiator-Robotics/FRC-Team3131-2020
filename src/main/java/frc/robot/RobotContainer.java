@@ -61,12 +61,16 @@ public class RobotContainer {
   
   public RobotContainer() {
     if(isPracticeBot == false){ 
-      WPI_VictorSPX leftDrive2 = new  WPI_VictorSPX(1); //Left Back
-      WPI_TalonSRX rightDrive2 = new  WPI_TalonSRX(2); //Right Back
-      WPI_TalonSRX rightDrive1 = new  WPI_TalonSRX(3); //Right Front
-      WPI_TalonSRX leftDrive1 = new  WPI_TalonSRX(4); //Left Front
+      WPI_VictorSPX leftDrive2 = new  WPI_VictorSPX(Constants.leftDrive2CANID); //Left Back
+      WPI_TalonSRX rightDrive2 = new  WPI_TalonSRX(Constants.rightDrive2CANID); //Right Back
+      WPI_TalonSRX rightDrive1 = new  WPI_TalonSRX(Constants.rightDrive1CANID); //Right Front
+      WPI_TalonSRX leftDrive1 = new  WPI_TalonSRX(Constants.leftDrive1CANID); //Left Front
       SpeedController leftMotor = new SpeedControllerGroup(leftDrive1, leftDrive2);
       SpeedController rightMotor = new SpeedControllerGroup(rightDrive1, rightDrive2);
+      leftDrive1.setInverted(false);
+      leftDrive2.setInverted(false);
+      rightDrive1.setInverted(false);
+      rightDrive2.setInverted(false);
       driveTrainSubsystem = new DrivetrainSubsystem(leftMotor, rightMotor);
     } else{
       driveTrainSubsystem = new DrivetrainSubsystem(new Talon(0), new Talon(1));
@@ -77,7 +81,7 @@ public class RobotContainer {
     feedMotorSubsystem = new FeedMotorSubsystem();
 
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
-    limelightAimCommand = new LimelightAimCommand(driveTrainSubsystem);
+    limelightAimCommand = new LimelightAimCommand(driveTrainSubsystem, controller);
     rotateColorWheelThreeTimesCommand = new RotateColorWheelThreeTimesCommand(colorWheelSubsystem);
     ballShooterCommand = new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
 
@@ -95,9 +99,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     aButton.whenHeld(ballShooterCommand);
-    // Todo: USe D-Pad up/down for piston
     bButton.whenHeld(new ClimbCommand(climbSubsystem));
-    xButton.toggleWhenPressed(limelightAimCommand);
+    xButton.whenHeld(limelightAimCommand);
     yButton.toggleWhenPressed(rotateColorWheelThreeTimesCommand);
     dPad.down.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, true));
     dPad.up.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, false));
