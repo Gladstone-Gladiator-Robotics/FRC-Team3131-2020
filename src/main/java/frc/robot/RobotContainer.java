@@ -42,7 +42,6 @@ public class RobotContainer {
   private final TeleopDriveCommand teleopDriveCommand;
   private final LimelightAimCommand limelightAimCommand;
   private final BallShooterCommand ballShooterCommand;
-  private final AutoCommand autoCommand;
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
   //private JoystickButton xButton = new JoystickButton(controller, 3);
@@ -83,7 +82,6 @@ public class RobotContainer {
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
     limelightAimCommand = new LimelightAimCommand(driveTrainSubsystem, controller);
     ballShooterCommand = new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
-    autoCommand = new AutoCommand(driveTrainSubsystem, ballShooterSubsystem, feedMotorSubsystem);
 
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
@@ -118,7 +116,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return  autoCommand;
+    return new AutoCommand(driveTrainSubsystem, ballShooterSubsystem, feedMotorSubsystem);
   }
 
   public Command getTeleopCommand(){
