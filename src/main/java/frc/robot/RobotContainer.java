@@ -42,6 +42,9 @@ public class RobotContainer {
   private final TeleopDriveCommand teleopDriveCommand;
   private final LimelightAimCommand limelightAimCommand;
   private final BallShooterCommand ballShooterCommand;
+  private final AutoBallShooterCommand autoBallShooterCommand;
+  private final AutoLimelightAimCommand autoLimelightAimCommand;
+  private final AutoCommand autoCommand;
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
   //private JoystickButton xButton = new JoystickButton(controller, 3);
@@ -50,8 +53,8 @@ public class RobotContainer {
   private JoystickButton rightBumper = new JoystickButton(controller, 6);
   //private JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
   private JoystickButton rightMiddleButton = new JoystickButton(controller, 8);
-  /*private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
-  private JoystickButton rightJoystickButton = new JoystickButton(controller, 10);*/
+  //private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
+  //private JoystickButton rightJoystickButton = new JoystickButton(controller, 10);
   private DirectionalPad dPad = new DirectionalPad(controller);
   private final boolean isPracticeBot = (new DigitalInput(9)).get();
   /**
@@ -60,16 +63,16 @@ public class RobotContainer {
   
   public RobotContainer() {
     if(isPracticeBot == false){ 
-      WPI_VictorSPX leftDrive2 = new  WPI_VictorSPX(Constants.leftDrive2CANID); //Left Back
-      WPI_TalonSRX rightDrive2 = new  WPI_TalonSRX(Constants.rightDrive2CANID); //Right Back
-      WPI_TalonSRX rightDrive1 = new  WPI_TalonSRX(Constants.rightDrive1CANID); //Right Front
-      WPI_TalonSRX leftDrive1 = new  WPI_TalonSRX(Constants.leftDrive1CANID); //Left Front
-      SpeedController leftMotor = new SpeedControllerGroup(leftDrive1, leftDrive2);
-      SpeedController rightMotor = new SpeedControllerGroup(rightDrive1, rightDrive2);
-      leftDrive1.setInverted(false);
-      leftDrive2.setInverted(false);
-      rightDrive1.setInverted(false);
-      rightDrive2.setInverted(false);
+      WPI_VictorSPX leftDriveFront = new  WPI_VictorSPX(Constants.leftDriveFrontCANID); //Left Back
+      WPI_TalonSRX rightDriveFront = new  WPI_TalonSRX(Constants.rightDriveFrontCANID); //Right Back
+      WPI_TalonSRX leftDriveBack = new  WPI_TalonSRX(Constants.rightDriveBackCANID); //Right Front
+      WPI_TalonSRX rightDriveBack = new  WPI_TalonSRX(Constants.leftDriveBackCANID); //Left Front
+      SpeedController leftMotor = new SpeedControllerGroup(leftDriveFront, leftDriveBack);
+      SpeedController rightMotor = new SpeedControllerGroup(rightDriveFront, rightDriveBack);
+      leftDriveFront.setInverted(false);
+      leftDriveFront.setInverted(false);
+      rightDriveBack.setInverted(false);
+      rightDriveBack.setInverted(false);
       driveTrainSubsystem = new DrivetrainSubsystem(leftMotor, rightMotor);
     } else{
       driveTrainSubsystem = new DrivetrainSubsystem(new Talon(0), new Talon(1));
@@ -82,6 +85,10 @@ public class RobotContainer {
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
     limelightAimCommand = new LimelightAimCommand(driveTrainSubsystem, controller);
     ballShooterCommand = new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
+    autoLimelightAimCommand = new AutoLimelightAimCommand(driveTrainSubsystem, controller);
+    autoBallShooterCommand = new AutoBallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
+    autoCommand = new AutoCommand(driveTrainSubsystem, ballShooterSubsystem,
+     feedMotorSubsystem, autoLimelightAimCommand, autoBallShooterCommand);
 
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
@@ -116,7 +123,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutoCommand(driveTrainSubsystem, ballShooterSubsystem, feedMotorSubsystem);
+    return autoCommand;
   }
 
   public Command getTeleopCommand(){

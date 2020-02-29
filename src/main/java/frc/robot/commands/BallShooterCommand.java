@@ -34,6 +34,7 @@ public class BallShooterCommand extends CommandBase {
       ballSystem.shoot();
       time += 1;
     }else{
+      ballSystem.shoot();
       feedSystem.start();
     }
   }

@@ -17,13 +17,13 @@ public class IntakeSubsystem extends SubsystemBase{
     public IntakeSubsystem() {
         intakeMotor = new WPI_TalonSRX(Constants.intakeMotorCANID);
         compressor = new Compressor(0);
-        intakePiston1 = new DoubleSolenoid(2,3);
-        intakePiston2 = new DoubleSolenoid(4,5);
+        intakePiston1 = new DoubleSolenoid(Constants.intakePiston1Port1,Constants.intakePiston1Port2);
+        intakePiston2 = new DoubleSolenoid(Constants.intakePiston2Port1,Constants.intakePiston2Port2);
         compressor.setClosedLoopControl(true);
         SendableRegistry.setName(intakePiston1, "intakePiston1");
         SendableRegistry.setName(intakePiston2, "intakePiston2");
         SendableRegistry.setName(compressor, "compressor");
-        SendableRegistry.setName(intakeMotor, "IntakeMotor");
+        SendableRegistry.setName(intakeMotor, "intakeMotor");
     }
 
     public void periodic() {

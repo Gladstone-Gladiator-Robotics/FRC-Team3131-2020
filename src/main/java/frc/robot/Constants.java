@@ -17,15 +17,16 @@ package frc.robot;
  */
 public final class Constants {
     //motors
-    public static int leftDrive2CANID = 1;
-    public static int rightDrive2CANID = 2;
-    public static int rightDrive1CANID = 3;
-    public static int leftDrive1CANID = 4;
+    public static int leftDriveFrontCANID = 1;
+    public static int leftDriveBackCANID = 2;
+    public static int rightDriveFrontCANID = 6;
+    public static int rightDriveBackCANID = 7;
     public static int colorWheelMotorCANID = 5;
-    public static int intakeMotorCANID = 6;
-    public static int ballShooterCANID = 7;
-    public static int feedMotorCANID = 8;
-    public static int climbMotorCANID = 9;
+    public static int feedMotorCANID = 3;
+    public static int climbMotorCANID = 4;
+    public static int intakeMotorCANID = 8;
+    public static int ballShooterCANID = 9;
+    
     //solenoids
     public static int intakePiston1Port1 = 2;
     public static int intakePiston1Port2 = 3;

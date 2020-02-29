@@ -7,21 +7,18 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.BallShooterSubsystem;
+import frc.robot.subsystems.FeedMotorSubsystem;
 
-public class ExtendIntakeCommand extends CommandBase {
-  private final IntakeSubsystem subsystem;
-  private final Boolean extend;
-  int time;
-  /**
-   * Creates a new ExtendPistonCommand.
-   */
-  public ExtendIntakeCommand(IntakeSubsystem subsystem, Boolean extend) {
-    this.subsystem = subsystem;
-    this.extend = extend;
-    addRequirements(subsystem);
+public class AutoBallShooterCommand extends CommandBase {
+  private final BallShooterSubsystem ballSystem;
+  private final FeedMotorSubsystem feedSystem;
+  private int time;
+  public AutoBallShooterCommand(BallShooterSubsystem ballSystem, FeedMotorSubsystem feedSystem) {
+    this.ballSystem = ballSystem;
+    this.feedSystem = feedSystem;
+    addRequirements(ballSystem, feedSystem);
   }
 
   // Called when the command is initially scheduled.
@@ -33,25 +30,25 @@ public class ExtendIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   if(extend == true){
-    subsystem.intakePiston1.set(DoubleSolenoid.Value.kForward);
-    subsystem.intakePiston2.set(DoubleSolenoid.Value.kForward);
-   } else{
-    subsystem.intakePiston1.set(DoubleSolenoid.Value.kReverse);
-    subsystem.intakePiston2.set(DoubleSolenoid.Value.kReverse);
-   }
+    if(time < 100){
+      ballSystem.shoot();
+      time += 1;
+    }else{
+      ballSystem.shoot();
+      feedSystem.start();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.intakePiston1.set(DoubleSolenoid.Value.kOff);
-    subsystem.intakePiston2.set(DoubleSolenoid.Value.kOff);
+    ballSystem.stop();
+    feedSystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

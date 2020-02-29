@@ -9,61 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
-
-import java.util.Map;
-
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
-public class LimelightAimCommand extends CommandBase {
+public class AutoLimelightAimCommand extends CommandBase {
   private final DrivetrainSubsystem driveTrain;
   private boolean isFinished = false;
-  private NetworkTableEntry desiredTargetArea;
-  private NetworkTableEntry steerConstant;
-  private NetworkTableEntry driveConstant;
-  private NetworkTableEntry maxDriveSpeed;
-  private NetworkTableEntry maxSteerSpeed;
-  
   /**
    * Creates a new LimelightAimCommand.
    */
-  public LimelightAimCommand(DrivetrainSubsystem driveTrain, XboxController controller) {
+  public AutoLimelightAimCommand(DrivetrainSubsystem driveTrain, XboxController controller) {
     this.driveTrain = driveTrain;
-    final ShuffleboardTab tab = Shuffleboard.getTab("Tuning");
-    desiredTargetArea =
-      tab.add("Desired Target Area", 16)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", 0, "max", 25))
-      .withSize(4, 1)
-      .getEntry();
-    steerConstant = 
-      tab.add("Steer Constant", -0.1)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", -1, "max", 1))
-      .withSize(4, 1)
-      .getEntry();
-    driveConstant =
-      tab.add("Drive Constant", -0.2)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", -1, "max", 1))
-      .withSize(4, 1)
-      .getEntry();
-    maxDriveSpeed = 
-      tab.add("Max Drive Speed", -0.55)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", -1, "max", 1))
-      .withSize(4, 1)
-      .getEntry();
-    maxSteerSpeed = 
-      tab.add("Max Steer Speed", 0.55)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", -1, "max", 1))
-      .withSize(4, 1)
-      .getEntry();
     addRequirements(driveTrain);
   }
 
@@ -93,11 +48,11 @@ public class LimelightAimCommand extends CommandBase {
   }
 
   public void Update_Limelight_Tracking(){
-    final double STEER_K = steerConstant.getDouble(-0.1);                    // how hard to turn toward the target
-    final double DRIVE_K = driveConstant.getDouble(-0.2);                    // how hard to drive fwd toward the target
-    final double DESIRED_TARGET_AREA = desiredTargetArea.getDouble(16);        // Area of the target when the robot reaches the wall
-    final double MAX_DRIVE = maxDriveSpeed.getDouble(-0.55);                 // Simple speed limit so we don't drive too fast
-    final double MAX_STEER = maxSteerSpeed.getDouble(0.55);             
+    final double STEER_K = -0.1;                    // how hard to turn toward the target
+    final double DRIVE_K = -0.2;                    // how hard to drive fwd toward the target
+    final double DESIRED_TARGET_AREA = 16;        // Area of the target when the robot reaches the wall
+    final double MAX_DRIVE = -0.55;                 // Simple speed limit so we don't drive too fast
+    final double MAX_STEER = 0.55;             
     double tv = NetworkTableInstance.getDefault().getTable("limelight-ghs").getEntry("tv").getDouble(0);
     double tx = NetworkTableInstance.getDefault().getTable("limelight-ghs").getEntry("tx").getDouble(0);
     //double ty = NetworkTableInstance.getDefault().getTable("limelight-ghs").getEntry("ty").getDouble(0);
