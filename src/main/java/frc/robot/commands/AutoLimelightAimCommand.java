@@ -51,7 +51,7 @@ public class AutoLimelightAimCommand extends CommandBase {
     final double STEER_K = -0.1;                    // how hard to turn toward the target
     final double DRIVE_K = -0.2;                    // how hard to drive fwd toward the target
     final double DESIRED_TARGET_AREA = 16;        // Area of the target when the robot reaches the wall
-    final double MAX_DRIVE = -0.55;                 // Simple speed limit so we don't drive too fast
+    final double MAX_DRIVE = -0.5;                 // Simple speed limit so we don't drive too fast
     final double MAX_STEER = 0.55;             
     double tv = NetworkTableInstance.getDefault().getTable("limelight-ghs").getEntry("tv").getDouble(0);
     double tx = NetworkTableInstance.getDefault().getTable("limelight-ghs").getEntry("tx").getDouble(0);
@@ -76,9 +76,10 @@ public class AutoLimelightAimCommand extends CommandBase {
             drive_cmd = MAX_DRIVE;
       }
       driveTrain.speed = drive_cmd;
-      if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= 2){
-        isFinished = true;
-      }
+    }
+    if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= 3){
+      System.out.println(isFinished);
+      isFinished = true;
     }
   }
 

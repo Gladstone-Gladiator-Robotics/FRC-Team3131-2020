@@ -22,7 +22,6 @@ public class RotateToColorCommand extends CommandBase {
     this.color = color;
     this.subsystem = subsystem;
     addRequirements(subsystem);
-
   }
 
   // Called when the command is initially scheduled.

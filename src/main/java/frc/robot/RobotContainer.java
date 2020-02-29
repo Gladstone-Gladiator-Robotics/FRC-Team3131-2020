@@ -88,7 +88,7 @@ public class RobotContainer {
     autoLimelightAimCommand = new AutoLimelightAimCommand(driveTrainSubsystem, controller);
     autoBallShooterCommand = new AutoBallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
     autoCommand = new AutoCommand(driveTrainSubsystem, ballShooterSubsystem,
-     feedMotorSubsystem, autoLimelightAimCommand, autoBallShooterCommand);
+    feedMotorSubsystem, autoLimelightAimCommand, autoBallShooterCommand);
 
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);

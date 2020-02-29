@@ -22,8 +22,8 @@ public final class Constants {
     public static int rightDriveFrontCANID = 6;
     public static int rightDriveBackCANID = 7;
     public static int colorWheelMotorCANID = 5;
-    public static int feedMotorCANID = 3;
-    public static int climbMotorCANID = 4;
+    public static int feedMotorCANID = 4;
+    public static int climbMotorCANID = 3;
     public static int intakeMotorCANID = 8;
     public static int ballShooterCANID = 9;
     

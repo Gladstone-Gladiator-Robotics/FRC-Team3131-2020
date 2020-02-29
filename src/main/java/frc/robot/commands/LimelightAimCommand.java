@@ -121,9 +121,9 @@ public class LimelightAimCommand extends CommandBase {
             drive_cmd = MAX_DRIVE;
       }
       driveTrain.speed = drive_cmd;
-      if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= 2){
-        isFinished = true;
-      }
+    }
+    if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= 2){
+      isFinished = true;
     }
   }
 
