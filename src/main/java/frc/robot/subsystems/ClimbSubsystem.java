@@ -9,24 +9,16 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ClimbSubsystem extends SubsystemBase {
   private final WPI_TalonSRX climbMotor;
-  private final DigitalOutput climbLock;
   private boolean running = false;
   public ClimbSubsystem() {
-    climbMotor = new WPI_TalonSRX(9);
-    climbLock = new DigitalOutput(8);
-    climbLock.set(true);
-    SendableRegistry.setName(climbLock, "climbLock");
+    climbMotor = new WPI_TalonSRX(Constants.climbMotorCANID);
     SendableRegistry.setName(climbMotor, "climbMotor");
-  }
-
-  public void unlock(){
-    climbLock.set(false);
   }
 
   public void climb(){

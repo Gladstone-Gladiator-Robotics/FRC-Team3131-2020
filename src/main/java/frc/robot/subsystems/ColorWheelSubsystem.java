@@ -18,12 +18,13 @@ import com.revrobotics.ColorMatchResult;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorMatch;
 
+import frc.robot.Constants;
 import frc.robot.WheelColor;
 public class ColorWheelSubsystem extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch m_colorMatcher = new ColorMatch();
-  private WPI_TalonSRX colorWheelMotor = new WPI_TalonSRX(6);
+  private WPI_TalonSRX colorWheelMotor = new WPI_TalonSRX(Constants.colorWheelMotorCANID);
 
   private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
   private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);

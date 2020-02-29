@@ -12,7 +12,6 @@ import frc.robot.subsystems.ClimbSubsystem;
 
 public class ClimbCommand extends CommandBase {
   private final ClimbSubsystem subsystem;
-  private int timesExecuted = 0;
   public ClimbCommand(ClimbSubsystem subsystem) {
     this.subsystem = subsystem;
     addRequirements(subsystem);
@@ -21,19 +20,13 @@ public class ClimbCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subsystem.unlock();
     
-    if (timesExecuted >= 1){
-      subsystem.climb();
-    }
-    timesExecuted += 1;
-    System.out.println("running");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    subsystem.climb();
   }
 
   // Called once the command ends or is interrupted.

@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.Constants;
 
 
 /**
@@ -21,7 +22,7 @@ public class BallShooterSubsystem extends SubsystemBase {
   private Boolean isshooting = false;
 
   public BallShooterSubsystem(){
-    ballShooter = new WPI_TalonSRX(7);
+    ballShooter = new WPI_TalonSRX(Constants.ballShooterCANID);
     SendableRegistry.setName(ballShooter, "ballShooter");
   }
 

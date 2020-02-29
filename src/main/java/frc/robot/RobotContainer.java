@@ -41,19 +41,19 @@ public class RobotContainer {
   //private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final TeleopDriveCommand teleopDriveCommand;
   private final LimelightAimCommand limelightAimCommand;
-  private final RotateColorWheelThreeTimesCommand rotateColorWheelThreeTimesCommand;
   private final BallShooterCommand ballShooterCommand;
+  private final AutoCommand autoCommand;
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
-  private JoystickButton xButton = new JoystickButton(controller, 3);
-  private JoystickButton yButton = new JoystickButton(controller, 4);
+  //private JoystickButton xButton = new JoystickButton(controller, 3);
+  //private JoystickButton yButton = new JoystickButton(controller, 4);
   private JoystickButton leftBumper = new JoystickButton(controller, 5);
-  //private JoystickButton rightBumper = new JoystickButton(controller, 6);
-  private DirectionalPad dPad = new DirectionalPad(controller);
-  /*private JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
+  private JoystickButton rightBumper = new JoystickButton(controller, 6);
+  //private JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
   private JoystickButton rightMiddleButton = new JoystickButton(controller, 8);
-  private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
+  /*private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
   private JoystickButton rightJoystickButton = new JoystickButton(controller, 10);*/
+  private DirectionalPad dPad = new DirectionalPad(controller);
   private final boolean isPracticeBot = (new DigitalInput(9)).get();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -82,8 +82,8 @@ public class RobotContainer {
 
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
     limelightAimCommand = new LimelightAimCommand(driveTrainSubsystem, controller);
-    rotateColorWheelThreeTimesCommand = new RotateColorWheelThreeTimesCommand(colorWheelSubsystem);
     ballShooterCommand = new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
+    autoCommand = new AutoCommand(driveTrainSubsystem, ballShooterSubsystem, feedMotorSubsystem);
 
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
@@ -98,13 +98,16 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoysticpixyLightskButton}.
    */
   private void configureButtonBindings() {
-    aButton.whenHeld(ballShooterCommand);
+    aButton.toggleWhenActive(new IntakeMotorCommand(intakeSubsystem, feedMotorSubsystem));
     bButton.whenHeld(new ClimbCommand(climbSubsystem));
-    xButton.whenHeld(limelightAimCommand);
-    yButton.toggleWhenPressed(rotateColorWheelThreeTimesCommand);
+    //xButton.whenHeld();
+    //yButton.toggleWhenActive();
     dPad.down.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, true));
     dPad.up.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, false));
-    leftBumper.toggleWhenActive(new IntakeMotorCommand(intakeSubsystem, feedMotorSubsystem));
+    leftBumper.whenHeld(limelightAimCommand);
+    rightBumper.whenHeld(ballShooterCommand);
+    //leftMiddleButton.toggleWhenActive();
+    rightMiddleButton.toggleWhenActive(new RotateColorWheelThreeTimesCommand(colorWheelSubsystem));
   }
 
 
@@ -115,7 +118,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return getTeleopCommand();
+    return  autoCommand;
   }
 
   public Command getTeleopCommand(){
