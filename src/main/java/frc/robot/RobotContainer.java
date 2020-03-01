@@ -70,9 +70,9 @@ public class RobotContainer {
       SpeedController leftMotor = new SpeedControllerGroup(leftDriveFront, leftDriveBack);
       SpeedController rightMotor = new SpeedControllerGroup(rightDriveFront, rightDriveBack);
       leftDriveFront.setInverted(true);
-      leftDriveBack.setInverted(false);
-      rightDriveFront.setInverted(false);
-      rightDriveBack.setInverted(false);
+      leftDriveBack.setInverted(true);
+      rightDriveFront.setInverted(true);
+      rightDriveBack.setInverted(true);
       driveTrainSubsystem = new DrivetrainSubsystem(leftMotor, rightMotor);
     } else{
       driveTrainSubsystem = new DrivetrainSubsystem(new Talon(0), new Talon(1));
