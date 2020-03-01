@@ -63,15 +63,15 @@ public class RobotContainer {
   
   public RobotContainer() {
     if(isPracticeBot == false){ 
-      WPI_VictorSPX leftDriveFront = new  WPI_VictorSPX(Constants.leftDriveFrontCANID); //Left Back
-      WPI_TalonSRX rightDriveFront = new  WPI_TalonSRX(Constants.rightDriveFrontCANID); //Right Back
-      WPI_TalonSRX leftDriveBack = new  WPI_TalonSRX(Constants.rightDriveBackCANID); //Right Front
-      WPI_TalonSRX rightDriveBack = new  WPI_TalonSRX(Constants.leftDriveBackCANID); //Left Front
+      WPI_VictorSPX leftDriveFront = new WPI_VictorSPX(Constants.leftDriveFrontCANID); //Left Back
+      WPI_TalonSRX leftDriveBack = new WPI_TalonSRX(Constants.leftDriveBackCANID); //Right Front
+      WPI_TalonSRX rightDriveFront = new WPI_TalonSRX(Constants.rightDriveFrontCANID); //Right Back
+      WPI_VictorSPX rightDriveBack = new WPI_VictorSPX(Constants.rightDriveBackCANID); //Left Front
       SpeedController leftMotor = new SpeedControllerGroup(leftDriveFront, leftDriveBack);
       SpeedController rightMotor = new SpeedControllerGroup(rightDriveFront, rightDriveBack);
-      leftDriveFront.setInverted(false);
-      leftDriveFront.setInverted(false);
-      rightDriveBack.setInverted(false);
+      leftDriveFront.setInverted(true);
+      leftDriveBack.setInverted(false);
+      rightDriveFront.setInverted(false);
       rightDriveBack.setInverted(false);
       driveTrainSubsystem = new DrivetrainSubsystem(leftMotor, rightMotor);
     } else{

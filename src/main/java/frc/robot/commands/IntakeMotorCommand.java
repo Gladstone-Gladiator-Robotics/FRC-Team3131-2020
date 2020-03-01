@@ -33,7 +33,7 @@ public class IntakeMotorCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSystem.intakeMotor.set(1);
+    intakeSystem.intakeMotor.set(-.14);
     if (ballSensor.getVoltage() > 2){
       feedSystem.start();
     }else{

@@ -77,7 +77,7 @@ public class AutoLimelightAimCommand extends CommandBase {
       }
       driveTrain.speed = drive_cmd;
     }
-    if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= 3){
+    if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= 2){
       System.out.println(isFinished);
       isFinished = true;
     }

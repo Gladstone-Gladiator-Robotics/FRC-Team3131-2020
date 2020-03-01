@@ -47,8 +47,8 @@ public class TeleopDriveCommand extends CommandBase {
       m_subsystem.rotation = -controller.getX(Hand.kLeft);
     } 
     else{
-      m_subsystem.speed =  -0.7 * controller.getY(Hand.kLeft);
-      m_subsystem.rotation = -0.7 * controller.getX(Hand.kLeft);
+      m_subsystem.speed =  0.6 * controller.getY(Hand.kLeft);
+      m_subsystem.rotation = -0.6 * controller.getX(Hand.kLeft);
     }
   }
 

@@ -15,6 +15,7 @@ import java.util.Map;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -27,7 +28,7 @@ public class LimelightAimCommand extends CommandBase {
   private NetworkTableEntry driveConstant;
   private NetworkTableEntry maxDriveSpeed;
   private NetworkTableEntry maxSteerSpeed;
-  
+  private XboxController controller;
   /**
    * Creates a new LimelightAimCommand.
    */
@@ -82,6 +83,7 @@ public class LimelightAimCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    controller.setRumble(RumbleType.kLeftRumble, 1);
     driveTrain.speed = 0;
     driveTrain.rotation = 0;
   }
