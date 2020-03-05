@@ -21,50 +21,56 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class LimelightAimCommand extends CommandBase {
+  
+  private static NetworkTableEntry desiredTargetArea;
+  private static NetworkTableEntry steerConstant;
+  private static NetworkTableEntry driveConstant;
+  private static NetworkTableEntry maxDriveSpeed;
+  private static NetworkTableEntry maxSteerSpeed;
+  
   private final DrivetrainSubsystem driveTrain;
   private boolean isFinished = false;
-  private NetworkTableEntry desiredTargetArea;
-  private NetworkTableEntry steerConstant;
-  private NetworkTableEntry driveConstant;
-  private NetworkTableEntry maxDriveSpeed;
-  private NetworkTableEntry maxSteerSpeed;
-  private XboxController controller;
+  private final XboxController controller;
   /**
    * Creates a new LimelightAimCommand.
    */
   public LimelightAimCommand(DrivetrainSubsystem driveTrain, XboxController controller) {
     this.driveTrain = driveTrain;
+    this.controller = controller;
     final ShuffleboardTab tab = Shuffleboard.getTab("Tuning");
-    desiredTargetArea =
-      tab.add("Desired Target Area", 16)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", 0, "max", 25))
-      .withSize(4, 1)
-      .getEntry();
-    steerConstant = 
-      tab.add("Steer Constant", -0.1)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", -1, "max", 1))
-      .withSize(4, 1)
-      .getEntry();
-    driveConstant =
-      tab.add("Drive Constant", -0.2)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", -1, "max", 1))
-      .withSize(4, 1)
-      .getEntry();
-    maxDriveSpeed = 
-      tab.add("Max Drive Speed", -0.55)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", -1, "max", 1))
-      .withSize(4, 1)
-      .getEntry();
-    maxSteerSpeed = 
-      tab.add("Max Steer Speed", 0.55)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", -1, "max", 1))
-      .withSize(4, 1)
-      .getEntry();
+    
+    if (desiredTargetArea == null) {
+      desiredTargetArea =
+        tab.add("Desired Target Area", 16)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withProperties(Map.of("min", 0, "max", 25))
+        .withSize(4, 1)
+        .getEntry();
+      steerConstant = 
+        tab.add("Steer Constant", -0.1)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withProperties(Map.of("min", -1, "max", 1))
+        .withSize(4, 1)
+        .getEntry();
+      driveConstant =
+        tab.add("Drive Constant", -0.2)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withProperties(Map.of("min", -1, "max", 1))
+        .withSize(4, 1)
+        .getEntry();
+      maxDriveSpeed = 
+        tab.add("Max Drive Speed", -0.55)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withProperties(Map.of("min", -1, "max", 1))
+        .withSize(4, 1)
+        .getEntry();
+      maxSteerSpeed = 
+        tab.add("Max Steer Speed", 0.55)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withProperties(Map.of("min", -1, "max", 1))
+        .withSize(4, 1)
+        .getEntry();
+    }
     addRequirements(driveTrain);
   }
 
@@ -77,24 +83,6 @@ public class LimelightAimCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Update_Limelight_Tracking();
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    controller.setRumble(RumbleType.kLeftRumble, 1);
-    driveTrain.speed = 0;
-    driveTrain.rotation = 0;
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return isFinished;
-  }
-
-  public void Update_Limelight_Tracking(){
     final double STEER_K = steerConstant.getDouble(-0.1);                    // how hard to turn toward the target
     final double DRIVE_K = driveConstant.getDouble(-0.2);                    // how hard to drive fwd toward the target
     final double DESIRED_TARGET_AREA = desiredTargetArea.getDouble(16);        // Area of the target when the robot reaches the wall
@@ -107,8 +95,8 @@ public class LimelightAimCommand extends CommandBase {
     
     if (tv < 0.5){
       driveTrain.speed = 0;
-      driveTrain.rotation = -0.55;
-    }  else if(ta < DESIRED_TARGET_AREA){
+      driveTrain.rotation = -MAX_STEER;
+    } else if(ta < DESIRED_TARGET_AREA) {
       // Start with proportional steering
       
       double steer_cmd = tx * STEER_K;
@@ -124,9 +112,23 @@ public class LimelightAimCommand extends CommandBase {
       }
       driveTrain.speed = drive_cmd;
     }
-    if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= 2){
+    if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= 2) {
+      controller.setRumble(RumbleType.kLeftRumble, 1);
       isFinished = true;
     }
   }
 
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    controller.setRumble(RumbleType.kLeftRumble, 1);
+    driveTrain.speed = 0;
+    driveTrain.rotation = 0;
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return isFinished;
+  }
 }

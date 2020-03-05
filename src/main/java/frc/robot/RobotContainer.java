@@ -18,6 +18,7 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -42,9 +43,7 @@ public class RobotContainer {
   private final TeleopDriveCommand teleopDriveCommand;
   private final LimelightAimCommand limelightAimCommand;
   private final BallShooterCommand ballShooterCommand;
-  private final AutoBallShooterCommand autoBallShooterCommand;
-  private final AutoLimelightAimCommand autoLimelightAimCommand;
-  private final AutoCommand autoCommand;
+  private final Command autoCommand;
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
@@ -85,10 +84,8 @@ public class RobotContainer {
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
     limelightAimCommand = new LimelightAimCommand(driveTrainSubsystem, controller);
     ballShooterCommand = new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
-    autoLimelightAimCommand = new AutoLimelightAimCommand(driveTrainSubsystem, controller);
-    autoBallShooterCommand = new AutoBallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
-    autoCommand = new AutoCommand(driveTrainSubsystem, ballShooterSubsystem,
-    feedMotorSubsystem, autoLimelightAimCommand, autoBallShooterCommand);
+    autoCommand = new SequentialCommandGroup(new LimelightAimCommand(driveTrainSubsystem, controller), 
+      new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem));
 
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
