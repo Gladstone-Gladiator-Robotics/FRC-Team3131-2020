@@ -5,55 +5,44 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+/*package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.ColorWheelSubsystem;
 
-public class ExtendIntakeCommand extends CommandBase {
-  private final IntakeSubsystem subsystem;
-  private final Boolean extend;
-  private int time;
-  /**
-   * Creates a new ExtendPistonCommand.
-   */
-  public ExtendIntakeCommand(IntakeSubsystem subsystem, Boolean extend) {
-    this.subsystem = subsystem;
+public class ColorWheelPistonCommand extends CommandBase {
+  private final ColorWheelSubsystem subsystem;
+  private boolean extend;
+  public ColorWheelPistonCommand(ColorWheelSubsystem subsystem, Boolean extend) {
     this.extend = extend;
+    this.subsystem = subsystem;
     addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    time = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   if(extend == true){
-    subsystem.intakePiston1.set(DoubleSolenoid.Value.kForward);
-    subsystem.intakePiston2.set(DoubleSolenoid.Value.kForward);
-   } else{
-    subsystem.intakePiston1.set(DoubleSolenoid.Value.kReverse);
-    subsystem.intakePiston2.set(DoubleSolenoid.Value.kReverse);
-   }
-   time += 1; 
-   System.out.println(time);
+    if(extend == true){
+      subsystem.colorWheelPiston.set(DoubleSolenoid.Value.kForward);
+    }else{
+      subsystem.colorWheelPiston.set(DoubleSolenoid.Value.kReverse);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.intakePiston1.set(DoubleSolenoid.Value.kOff);
-    subsystem.intakePiston2.set(DoubleSolenoid.Value.kOff);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (time >= 50);
+    return false;
   }
-}
+}*/

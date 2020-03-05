@@ -47,7 +47,7 @@ public class RobotContainer {
   private final AutoCommand autoCommand;
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
-  //private JoystickButton xButton = new JoystickButton(controller, 3);
+  private JoystickButton xButton = new JoystickButton(controller, 3);
   //private JoystickButton yButton = new JoystickButton(controller, 4);
   private JoystickButton leftBumper = new JoystickButton(controller, 5);
   private JoystickButton rightBumper = new JoystickButton(controller, 6);
@@ -105,7 +105,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     aButton.toggleWhenActive(new IntakeMotorCommand(intakeSubsystem, feedMotorSubsystem));
     bButton.whenHeld(new ClimbCommand(climbSubsystem));
-    //xButton.whenHeld();
+    xButton.whenHeld(new EjectCommand(intakeSubsystem));
     //yButton.toggleWhenActive();
     dPad.down.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, true));
     dPad.up.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, false));

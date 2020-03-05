@@ -7,8 +7,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FeedMotorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -16,12 +14,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeMotorCommand extends CommandBase {
   private final IntakeSubsystem intakeSystem;
   private final FeedMotorSubsystem feedSystem; 
-  private final AnalogInput ballSensor;
   public IntakeMotorCommand(IntakeSubsystem intakeSystem, FeedMotorSubsystem feedSystem){
     this.intakeSystem = intakeSystem;
     this.feedSystem = feedSystem;
-    ballSensor = new AnalogInput(1);
-    SendableRegistry.setName(ballSensor, "BallSensor");
     addRequirements(intakeSystem, feedSystem);
   }
 
@@ -34,7 +29,7 @@ public class IntakeMotorCommand extends CommandBase {
   @Override
   public void execute() {
     intakeSystem.intakeMotor.set(-.14);
-    if (ballSensor.getVoltage() > 2){
+    if (intakeSystem.ballSensor.getVoltage() > 2){
       feedSystem.start();
     }else{
       feedSystem.stop();
