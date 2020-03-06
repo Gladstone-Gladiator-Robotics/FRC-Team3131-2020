@@ -8,10 +8,15 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.*;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import java.util.Map;
 
 /**
  * An example command that uses an example subsystem.
@@ -19,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class TeleopDriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DrivetrainSubsystem m_subsystem;
+  private NetworkTableEntry normalSpeedMultiplier;
   private final XboxController controller = new XboxController(0);
   private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
   public double speed;
@@ -29,7 +35,13 @@ public class TeleopDriveCommand extends CommandBase {
    */
   public TeleopDriveCommand(DrivetrainSubsystem subsystem, XboxController controller) {
     m_subsystem = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
+    final ShuffleboardTab tab = Shuffleboard.getTab("Tuning");
+    normalSpeedMultiplier=
+      tab.addPersistent("Normal Speed Multiplier", 0.6)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withProperties(Map.of("min", 0, "max", 1))
+        .withSize(4, 1)
+        .getEntry();
     addRequirements(subsystem);
   }
 
@@ -47,8 +59,8 @@ public class TeleopDriveCommand extends CommandBase {
       m_subsystem.rotation = -controller.getX(Hand.kLeft);
     } 
     else{
-      m_subsystem.speed =  0.6 * controller.getY(Hand.kLeft);
-      m_subsystem.rotation = -0.6 * controller.getX(Hand.kLeft);
+      m_subsystem.speed =  normalSpeedMultiplier.getDouble(0.6) * controller.getY(Hand.kLeft);
+      m_subsystem.rotation = -normalSpeedMultiplier.getDouble(0.6) * controller.getX(Hand.kLeft);
     }
   }
 

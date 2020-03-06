@@ -47,10 +47,10 @@ public class RobotContainer {
   private JoystickButton aButton = new JoystickButton(controller, 1);
   private JoystickButton bButton = new JoystickButton(controller, 2);
   private JoystickButton xButton = new JoystickButton(controller, 3);
-  //private JoystickButton yButton = new JoystickButton(controller, 4);
+  private JoystickButton yButton = new JoystickButton(controller, 4);
   private JoystickButton leftBumper = new JoystickButton(controller, 5);
   private JoystickButton rightBumper = new JoystickButton(controller, 6);
-  //private JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
+  private JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
   private JoystickButton rightMiddleButton = new JoystickButton(controller, 8);
   //private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
   //private JoystickButton rightJoystickButton = new JoystickButton(controller, 10);
@@ -103,12 +103,12 @@ public class RobotContainer {
     aButton.toggleWhenActive(new IntakeMotorCommand(intakeSubsystem, feedMotorSubsystem));
     bButton.whenHeld(new ClimbCommand(climbSubsystem));
     xButton.whenHeld(new EjectCommand(intakeSubsystem));
-    //yButton.toggleWhenActive();
+    yButton.toggleWhenActive(new ColorWheelPistonCommand(colorWheelSubsystem, true));
     dPad.down.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, true));
     dPad.up.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, false));
     leftBumper.whenHeld(limelightAimCommand);
     rightBumper.whenHeld(ballShooterCommand);
-    //leftMiddleButton.toggleWhenActive();
+    //leftMiddleButton.toggleWhenActive(new RotateToFMSColorCommand());
     rightMiddleButton.toggleWhenActive(new RotateColorWheelThreeTimesCommand(colorWheelSubsystem));
   }
 

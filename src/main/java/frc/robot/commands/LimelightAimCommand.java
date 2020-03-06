@@ -10,6 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -27,6 +29,7 @@ public class LimelightAimCommand extends CommandBase {
   private static NetworkTableEntry driveConstant;
   private static NetworkTableEntry maxDriveSpeed;
   private static NetworkTableEntry maxSteerSpeed;
+  private static NetworkTableEntry targetAngle;
   
   private final DrivetrainSubsystem driveTrain;
   private boolean isFinished = false;
@@ -38,37 +41,36 @@ public class LimelightAimCommand extends CommandBase {
     this.driveTrain = driveTrain;
     this.controller = controller;
     final ShuffleboardTab tab = Shuffleboard.getTab("Tuning");
-    
     if (desiredTargetArea == null) {
       desiredTargetArea =
-        tab.add("Desired Target Area", 16)
+        tab.addPersistent("Desired Target Area", 16)
         .withWidget(BuiltInWidgets.kTextView)
         .withProperties(Map.of("min", 0, "max", 25))
-        .withSize(4, 1)
         .getEntry();
       steerConstant = 
-        tab.add("Steer Constant", -0.1)
+        tab.addPersistent("Steer Constant", -0.1)
         .withWidget(BuiltInWidgets.kTextView)
         .withProperties(Map.of("min", -1, "max", 1))
-        .withSize(4, 1)
         .getEntry();
       driveConstant =
-        tab.add("Drive Constant", -0.2)
+        tab.addPersistent("Drive Constant", -0.2)
         .withWidget(BuiltInWidgets.kTextView)
         .withProperties(Map.of("min", -1, "max", 1))
-        .withSize(4, 1)
         .getEntry();
       maxDriveSpeed = 
-        tab.add("Max Drive Speed", -0.55)
+        tab.addPersistent("Max Drive Speed", -0.55)
         .withWidget(BuiltInWidgets.kTextView)
         .withProperties(Map.of("min", -1, "max", 1))
-        .withSize(4, 1)
         .getEntry();
       maxSteerSpeed = 
-        tab.add("Max Steer Speed", 0.55)
+        tab.addPersistent("Max Steer Speed", 0.55)
         .withWidget(BuiltInWidgets.kTextView)
         .withProperties(Map.of("min", -1, "max", 1))
-        .withSize(4, 1)
+        .getEntry();
+      targetAngle = 
+        tab.addPersistent("targetAngle", 2)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withProperties(Map.of("min", 0, "max", 10))
         .getEntry();
     }
     addRequirements(driveTrain);
@@ -112,8 +114,10 @@ public class LimelightAimCommand extends CommandBase {
       }
       driveTrain.speed = drive_cmd;
     }
-    if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= 2) {
+    if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= targetAngle.getDouble(2)) {
       controller.setRumble(RumbleType.kLeftRumble, 1);
+      Timer timer = new Timer();
+      timer.schedule(new RumbleStopper(controller), 500);
       isFinished = true;
     }
   }
@@ -121,7 +125,6 @@ public class LimelightAimCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    controller.setRumble(RumbleType.kLeftRumble, 1);
     driveTrain.speed = 0;
     driveTrain.rotation = 0;
   }
@@ -131,4 +134,17 @@ public class LimelightAimCommand extends CommandBase {
   public boolean isFinished() {
     return isFinished;
   }
+
 }
+
+  class RumbleStopper extends TimerTask{
+    private final XboxController controller;
+    public RumbleStopper(XboxController controller){
+      this.controller = controller;
+    }
+    @Override
+    public void run() {
+      controller.setRumble(RumbleType.kLeftRumble, 0);
+    }
+  }
+ 

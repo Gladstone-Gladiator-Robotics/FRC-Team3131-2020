@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-/*package frc.robot.commands;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -14,6 +14,7 @@ import frc.robot.subsystems.ColorWheelSubsystem;
 public class ColorWheelPistonCommand extends CommandBase {
   private final ColorWheelSubsystem subsystem;
   private boolean extend;
+  private int time;
   public ColorWheelPistonCommand(ColorWheelSubsystem subsystem, Boolean extend) {
     this.extend = extend;
     this.subsystem = subsystem;
@@ -23,6 +24,7 @@ public class ColorWheelPistonCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    time = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,16 +35,19 @@ public class ColorWheelPistonCommand extends CommandBase {
     }else{
       subsystem.colorWheelPiston.set(DoubleSolenoid.Value.kReverse);
     }
+    time +=1;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subsystem.colorWheelPiston.set(DoubleSolenoid.Value.kOff);
+    extend = !extend;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (time >= 50);
   }
-}*/
+}

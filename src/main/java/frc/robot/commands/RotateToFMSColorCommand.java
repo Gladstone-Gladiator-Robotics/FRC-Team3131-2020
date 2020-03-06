@@ -11,7 +11,7 @@ import frc.robot.WheelColor;
 import frc.robot.subsystems.ColorWheelSubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class RotateToFMSColorCommand  {
+public class RotateToFMSColorCommand {
   public static RotateToColorCommand getCommand(ColorWheelSubsystem subsystem){
     WheelColor desiredColor = getStageThreeColor();
     return new RotateToColorCommand(desiredColor, subsystem);

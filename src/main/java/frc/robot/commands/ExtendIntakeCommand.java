@@ -41,7 +41,6 @@ public class ExtendIntakeCommand extends CommandBase {
     subsystem.intakePiston2.set(DoubleSolenoid.Value.kReverse);
    }
    time += 1; 
-   System.out.println(time);
   }
 
   // Called once the command ends or is interrupted.
