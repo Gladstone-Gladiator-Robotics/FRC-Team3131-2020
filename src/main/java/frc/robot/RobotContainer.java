@@ -108,7 +108,7 @@ public class RobotContainer {
     dPad.up.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, false));
     leftBumper.whenHeld(limelightAimCommand);
     rightBumper.whenHeld(ballShooterCommand);
-    //leftMiddleButton.toggleWhenActive(new RotateToFMSColorCommand());
+    leftMiddleButton.toggleWhenActive(new RotateToFMSColorCommand(colorWheelSubsystem));
     rightMiddleButton.toggleWhenActive(new RotateColorWheelThreeTimesCommand(colorWheelSubsystem));
   }
 

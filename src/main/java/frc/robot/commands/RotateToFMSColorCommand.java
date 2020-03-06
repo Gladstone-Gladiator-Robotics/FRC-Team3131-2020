@@ -10,12 +10,38 @@ package frc.robot.commands;
 import frc.robot.WheelColor;
 import frc.robot.subsystems.ColorWheelSubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
-
-public class RotateToFMSColorCommand {
-  public static RotateToColorCommand getCommand(ColorWheelSubsystem subsystem){
-    WheelColor desiredColor = getStageThreeColor();
-    return new RotateToColorCommand(desiredColor, subsystem);
+import edu.wpi.first.wpilibj2.command.CommandBase;
+public class RotateToFMSColorCommand extends CommandBase {
+  private final ColorWheelSubsystem subsystem;
+  public RotateToFMSColorCommand(ColorWheelSubsystem subsystem) {
+    this.subsystem = subsystem;
+    addRequirements(subsystem);
   }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    subsystem.spin();
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    subsystem.stop();
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return (subsystem.getColor() == getStageThreeColor());
+    // if sensor is jittery then this won't work
+  }
+
   public static WheelColor getStageThreeColor(){
     
 
