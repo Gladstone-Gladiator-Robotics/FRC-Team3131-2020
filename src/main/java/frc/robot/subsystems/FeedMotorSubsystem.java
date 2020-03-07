@@ -31,7 +31,7 @@ public class FeedMotorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if (running == true){
-      feedMotor.set(1);
+      feedMotor.set(-1);
     } else {
       feedMotor.set(0);
     }

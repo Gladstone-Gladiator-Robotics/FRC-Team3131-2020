@@ -36,7 +36,8 @@ public class BallShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if(isshooting == true){
-      ballShooter.setVoltage(11);
+      //ballShooter.setVoltage(-11);
+      ballShooter.set(-1);
     }
     else{
       ballShooter.set(0);

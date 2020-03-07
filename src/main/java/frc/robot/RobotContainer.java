@@ -9,10 +9,10 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -44,28 +44,29 @@ public class RobotContainer {
   private final LimelightAimCommand limelightAimCommand;
   private final BallShooterCommand ballShooterCommand;
   private final Command autoCommand;
-  private JoystickButton aButton = new JoystickButton(controller, 1);
-  private JoystickButton bButton = new JoystickButton(controller, 2);
-  private JoystickButton xButton = new JoystickButton(controller, 3);
-  private JoystickButton yButton = new JoystickButton(controller, 4);
-  private JoystickButton leftBumper = new JoystickButton(controller, 5);
-  private JoystickButton rightBumper = new JoystickButton(controller, 6);
-  private JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
-  private JoystickButton rightMiddleButton = new JoystickButton(controller, 8);
+  private final JoystickButton aButton = new JoystickButton(controller, 1);
+  private final JoystickButton bButton = new JoystickButton(controller, 2);
+  private final JoystickButton xButton = new JoystickButton(controller, 3);
+  private final JoystickButton yButton = new JoystickButton(controller, 4);
+  private final JoystickButton leftBumper = new JoystickButton(controller, 5);
+  private final JoystickButton rightBumper = new JoystickButton(controller, 6);
+  private final JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
+  private final JoystickButton rightMiddleButton = new JoystickButton(controller, 8);
   //private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
   //private JoystickButton rightJoystickButton = new JoystickButton(controller, 10);
   private DirectionalPad dPad = new DirectionalPad(controller);
   private final boolean isPracticeBot = (new DigitalInput(9)).get();
+  private final SendableChooser sendablechooser;
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   
   public RobotContainer() {
     if(isPracticeBot == false){ 
-      WPI_VictorSPX leftDriveFront = new WPI_VictorSPX(Constants.leftDriveFrontCANID); //Left Back
-      WPI_TalonSRX leftDriveBack = new WPI_TalonSRX(Constants.leftDriveBackCANID); //Right Front
-      WPI_TalonSRX rightDriveFront = new WPI_TalonSRX(Constants.rightDriveFrontCANID); //Right Back
-      WPI_VictorSPX rightDriveBack = new WPI_VictorSPX(Constants.rightDriveBackCANID); //Left Front
+      WPI_VictorSPX leftDriveFront = new WPI_VictorSPX(Constants.leftDriveFrontCANID); 
+      WPI_TalonSRX leftDriveBack = new WPI_TalonSRX(Constants.leftDriveBackCANID); 
+      WPI_TalonSRX rightDriveFront = new WPI_TalonSRX(Constants.rightDriveFrontCANID); 
+      WPI_VictorSPX rightDriveBack = new WPI_VictorSPX(Constants.rightDriveBackCANID); 
       SpeedController leftMotor = new SpeedControllerGroup(leftDriveFront, leftDriveBack);
       SpeedController rightMotor = new SpeedControllerGroup(rightDriveFront, rightDriveBack);
       leftDriveFront.setInverted(true);
@@ -90,6 +91,11 @@ public class RobotContainer {
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
     CommandScheduler.getInstance().registerSubsystem(colorWheelSubsystem);
+    sendablechooser = new SendableChooser<Command>();
+    //sendablechooser.setDefaultOption<Command>(autoCommand,"Drive and Shoot");
+    //sendablechooser.addOption(“Drive”, new AutoDrive());
+    //sendablechooser.addOption(“Turn and Shoot”, new autoCommand());
+    SmartDashboard.putData("Autonomous", sendablechooser);
     configureButtonBindings();
   }  
 
