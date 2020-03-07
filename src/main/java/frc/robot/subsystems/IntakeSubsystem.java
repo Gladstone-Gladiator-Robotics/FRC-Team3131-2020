@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
 public class IntakeSubsystem extends SubsystemBase{
     private Compressor compressor;
@@ -19,7 +20,7 @@ public class IntakeSubsystem extends SubsystemBase{
         intakeMotor = new WPI_TalonSRX(Constants.intakeMotorCANID);
         compressor = new Compressor(10); 
         ballSensor = new AnalogInput(1);
-        intakePiston = new DoubleSolenoid(Constants.intakePistonPort1,Constants.intakePistonPort2);
+        intakePiston = new DoubleSolenoid(10, 1, 0);
         
        
         SendableRegistry.setName(ballSensor, "BallSensor");
@@ -33,10 +34,10 @@ public class IntakeSubsystem extends SubsystemBase{
     }
     
     public void extend(){
-        intakePiston.set(DoubleSolenoid.Value.kForward);
+        intakePiston.set(kForward);
     }
 
     public void retract(){
-        intakePiston.set(DoubleSolenoid.Value.kReverse);
+        intakePiston.set(kReverse);
     }
 }

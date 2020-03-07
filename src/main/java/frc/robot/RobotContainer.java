@@ -53,7 +53,7 @@ public class RobotContainer {
   private final JoystickButton leftMiddleButton = new JoystickButton(controller, 7);
   private final JoystickButton rightMiddleButton = new JoystickButton(controller, 8);
   //private JoystickButton leftJoystickButton = new JoystickButton(controller, 9);
-  //private JoystickButton rightJoystickButton = new JoystickButton(controller, 10);
+  //private final JoystickButton rightJoystickButton = new JoystickButton(controller, 10);
   private DirectionalPad dPad = new DirectionalPad(controller);
   private final boolean isPracticeBot = (new DigitalInput(9)).get();
   /**
@@ -103,10 +103,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     aButton.toggleWhenActive(new IntakeMotorCommand(intakeSubsystem, feedMotorSubsystem));
     bButton.whenHeld(new ClimbCommand(climbSubsystem));
-    //xButton.whenHeld(new EjectCommand(intakeSubsystem));
+    xButton.whenHeld(new EjectCommand(intakeSubsystem));
     //yButton.toggleWhenActive(new ColorWheelPistonCommand(colorWheelSubsystem, true));
-    xButton.whenHeld(new ExtendIntakeCommand(intakeSubsystem, true));
-    yButton.whenHeld(new ExtendIntakeCommand(intakeSubsystem, false));
+    yButton.toggleWhenActive(new FeedMotorCommand(feedMotorSubsystem));
+    dPad.up.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, true));
+    dPad.down.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, false));
     leftBumper.whenHeld(limelightAimCommand);
     rightBumper.whenHeld(ballShooterCommand);
     leftMiddleButton.toggleWhenActive(new RotateToFMSColorCommand(colorWheelSubsystem));

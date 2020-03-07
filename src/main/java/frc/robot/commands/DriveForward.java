@@ -7,48 +7,34 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.*;
 
-public class ExtendIntakeCommand extends CommandBase {
-  private final IntakeSubsystem subsystem;
-  private final Boolean extend;
-  private int time;
+public class DriveForward extends CommandBase {
   /**
-   * Creates a new ExtendPistonCommand.
+   * Creates a new DriveForward.
    */
-  public ExtendIntakeCommand(IntakeSubsystem subsystem, Boolean extend) {
-    this.subsystem = subsystem;
-    this.extend = extend;
-    addRequirements(subsystem);
+  public DriveForward() {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    time = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(extend == true){
-      subsystem.extend();
-    }else if(extend == false){
-      subsystem.retract();
-    }
-    time += 1; 
   }
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.intakePiston.set(DoubleSolenoid.Value.kOff);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (time >= 50);
+    return false;
   }
 }
