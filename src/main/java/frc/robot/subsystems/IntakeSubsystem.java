@@ -11,8 +11,7 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase{
     private Compressor compressor;
-    public DoubleSolenoid intakePiston1;
-    public DoubleSolenoid intakePiston2;
+    public DoubleSolenoid intakePiston;
     public final WPI_TalonSRX intakeMotor;
     public final AnalogInput ballSensor;
 
@@ -20,13 +19,11 @@ public class IntakeSubsystem extends SubsystemBase{
         intakeMotor = new WPI_TalonSRX(Constants.intakeMotorCANID);
         compressor = new Compressor(10); 
         ballSensor = new AnalogInput(1);
-        intakePiston1 = new DoubleSolenoid(Constants.intakePiston1Port1,Constants.intakePiston1Port2);
-        intakePiston2 = new DoubleSolenoid(Constants.intakePiston2Port1,Constants.intakePiston2Port2);
+        intakePiston = new DoubleSolenoid(Constants.intakePistonPort1,Constants.intakePistonPort2);
         
        
         SendableRegistry.setName(ballSensor, "BallSensor");
-        SendableRegistry.setName(intakePiston1, "intakePiston1");
-        SendableRegistry.setName(intakePiston2, "intakePiston2");
+        SendableRegistry.setName(intakePiston, "intakePiston1");
         SendableRegistry.setName(compressor, "compressor");
         SendableRegistry.setName(intakeMotor, "intakeMotor");
     }

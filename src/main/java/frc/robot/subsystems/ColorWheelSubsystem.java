@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
@@ -27,7 +26,6 @@ public class ColorWheelSubsystem extends SubsystemBase {
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch m_colorMatcher = new ColorMatch();
   private WPI_TalonSRX colorWheelMotor = new WPI_TalonSRX(Constants.colorWheelMotorCANID);
-  private Compressor compressor;
   public DoubleSolenoid colorWheelPiston;
   
   private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
@@ -45,9 +43,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
     SendableRegistry.setName(colorWheelMotor, "colorWheelMotor");
     SendableRegistry.setName(colorWheelPiston , "colorWheelPiston");
 
-    compressor = new Compressor(0);
-    colorWheelPiston = new DoubleSolenoid(0,1);
-    compressor.setClosedLoopControl(true);
+    colorWheelPiston = new DoubleSolenoid(4,5);
   }
   public WheelColor getColor(){
     Color detectedColor = m_colorSensor.getColor();

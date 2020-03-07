@@ -33,21 +33,17 @@ public class ExtendIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   if(extend == true){
-    subsystem.intakePiston1.set(DoubleSolenoid.Value.kForward);
-    subsystem.intakePiston2.set(DoubleSolenoid.Value.kForward);
-   } else{
-    subsystem.intakePiston1.set(DoubleSolenoid.Value.kReverse);
-    subsystem.intakePiston2.set(DoubleSolenoid.Value.kReverse);
-   }
-   time += 1; 
+    if(extend == true){
+      subsystem.intakePiston.set(DoubleSolenoid.Value.kForward);
+    }else{
+      subsystem.intakePiston.set(DoubleSolenoid.Value.kReverse);
+    }
+    time += 1; 
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.intakePiston1.set(DoubleSolenoid.Value.kOff);
-    subsystem.intakePiston2.set(DoubleSolenoid.Value.kOff);
+    subsystem.intakePiston.set(DoubleSolenoid.Value.kOff);
   }
 
   // Returns true when the command should end.

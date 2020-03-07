@@ -13,10 +13,12 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -33,7 +35,7 @@ import edu.wpi.first.wpilibj.Talon;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem driveTrainSubsystem;
-  private IntakeSubsystem intakeSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
   private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
   private final ColorWheelSubsystem colorWheelSubsystem;
   private final ClimbSubsystem climbSubsystem;
@@ -41,7 +43,7 @@ public class RobotContainer {
   private XboxController controller = new XboxController(0);
   //private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final TeleopDriveCommand teleopDriveCommand;
-  private final LimelightAimCommand limelightAimCommand;
+  private static LimelightAimCommand limelightAimCommand;
   private final BallShooterCommand ballShooterCommand;
   private final Command autoCommand;
   private final JoystickButton aButton = new JoystickButton(controller, 1);
@@ -56,7 +58,7 @@ public class RobotContainer {
   //private JoystickButton rightJoystickButton = new JoystickButton(controller, 10);
   private DirectionalPad dPad = new DirectionalPad(controller);
   private final boolean isPracticeBot = (new DigitalInput(9)).get();
-  private final SendableChooser sendablechooser;
+  private static SendableChooser sendableChooser;
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -91,11 +93,11 @@ public class RobotContainer {
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
     CommandScheduler.getInstance().registerSubsystem(colorWheelSubsystem);
-    sendablechooser = new SendableChooser<Command>();
-    //sendablechooser.setDefaultOption<Command>(autoCommand,"Drive and Shoot");
-    //sendablechooser.addOption(“Drive”, new AutoDrive());
-    //sendablechooser.addOption(“Turn and Shoot”, new autoCommand());
-    SmartDashboard.putData("Autonomous", sendablechooser);
+    sendableChooser = new SendableChooser<CommandGroupBase>();
+    //SendableChooser<autoCommand>.@setDefaultCommand("Drive and Shoot");
+    //SendableChooser.addOption("Drive", new AutoDrive());
+    //SendableChooser.addOption("Aim", new limelightAimCommand);
+    SmartDashboard.putData("Autonomous", sendableChooser);
     configureButtonBindings();
   }  
 

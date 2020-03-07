@@ -30,7 +30,7 @@ public class BallShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(time < 75){
+    if(time < 35){
       ballSystem.shoot();
       time += 1;
     }else{

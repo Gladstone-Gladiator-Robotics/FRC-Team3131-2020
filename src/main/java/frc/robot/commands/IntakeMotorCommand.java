@@ -29,7 +29,7 @@ public class IntakeMotorCommand extends CommandBase {
   @Override
   public void execute() {
     intakeSystem.intakeMotor.set(-.14);
-    if (intakeSystem.ballSensor.getVoltage() > 2){
+    if (intakeSystem.ballSensor.getVoltage() > 1){
       feedSystem.start();
     }else{
       feedSystem.stop();
