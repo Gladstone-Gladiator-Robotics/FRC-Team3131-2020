@@ -28,6 +28,6 @@ public final class Constants {
     public static int ballShooterCANID = 9;
     
     //solenoids
-    public static int intakePistonPort1 = 1;
-    public static int intakePistonPort2 = 0;
+    public static int intakePistonPort1 = 0;
+    public static int intakePistonPort2 = 1;
 }

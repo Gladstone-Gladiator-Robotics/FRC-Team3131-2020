@@ -23,7 +23,7 @@ public class IntakeSubsystem extends SubsystemBase{
         
        
         SendableRegistry.setName(ballSensor, "BallSensor");
-        SendableRegistry.setName(intakePiston, "intakePiston1");
+        SendableRegistry.setName(intakePiston, "intakePiston");
         SendableRegistry.setName(compressor, "compressor");
         SendableRegistry.setName(intakeMotor, "intakeMotor");
     }
@@ -32,4 +32,11 @@ public class IntakeSubsystem extends SubsystemBase{
         compressor.setClosedLoopControl(true);
     }
     
+    public void extend(){
+        intakePiston.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void retract(){
+        intakePiston.set(DoubleSolenoid.Value.kReverse);
+    }
 }

@@ -103,10 +103,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     aButton.toggleWhenActive(new IntakeMotorCommand(intakeSubsystem, feedMotorSubsystem));
     bButton.whenHeld(new ClimbCommand(climbSubsystem));
-    xButton.whenHeld(new EjectCommand(intakeSubsystem));
-    yButton.toggleWhenActive(new ColorWheelPistonCommand(colorWheelSubsystem, true));
-    dPad.down.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, true));
-    dPad.up.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, false));
+    //xButton.whenHeld(new EjectCommand(intakeSubsystem));
+    //yButton.toggleWhenActive(new ColorWheelPistonCommand(colorWheelSubsystem, true));
+    xButton.whenHeld(new ExtendIntakeCommand(intakeSubsystem, true));
+    yButton.whenHeld(new ExtendIntakeCommand(intakeSubsystem, false));
     leftBumper.whenHeld(limelightAimCommand);
     rightBumper.whenHeld(ballShooterCommand);
     leftMiddleButton.toggleWhenActive(new RotateToFMSColorCommand(colorWheelSubsystem));
