@@ -43,7 +43,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
     SendableRegistry.setName(colorWheelMotor, "colorWheelMotor");
     SendableRegistry.setName(colorWheelPiston , "colorWheelPiston");
 
-    colorWheelPiston = new DoubleSolenoid(4,5);
+    colorWheelPiston = new DoubleSolenoid(3,2);
   }
   public WheelColor getColor(){
     Color detectedColor = m_colorSensor.getColor();
