@@ -12,13 +12,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -43,9 +40,10 @@ public class RobotContainer {
   private XboxController controller = new XboxController(0);
   //private Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final TeleopDriveCommand teleopDriveCommand;
-  private static LimelightAimCommand limelightAimCommand;
-  private final BallShooterCommand ballShooterCommand;
-  private final Command autoCommand;
+  public final LimelightAimCommand limelightAimCommand;
+  public final DoNothingCommand doNothingCommand;
+  public final BallShooterCommand ballShooterCommand;
+  public final Command autoCommand;
   private final JoystickButton aButton = new JoystickButton(controller, 1);
   private final JoystickButton bButton = new JoystickButton(controller, 2);
   private final JoystickButton xButton = new JoystickButton(controller, 3);
@@ -58,7 +56,6 @@ public class RobotContainer {
   //private JoystickButton rightJoystickButton = new JoystickButton(controller, 10);
   private DirectionalPad dPad = new DirectionalPad(controller);
   private final boolean isPracticeBot = (new DigitalInput(9)).get();
-  private static SendableChooser sendableChooser;
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -85,6 +82,7 @@ public class RobotContainer {
     feedMotorSubsystem = new FeedMotorSubsystem();
 
     teleopDriveCommand = new TeleopDriveCommand(driveTrainSubsystem, controller);
+    doNothingCommand = new DoNothingCommand();
     limelightAimCommand = new LimelightAimCommand(driveTrainSubsystem, controller);
     ballShooterCommand = new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
     autoCommand = new SequentialCommandGroup(new LimelightAimCommand(driveTrainSubsystem, controller), 
@@ -93,11 +91,6 @@ public class RobotContainer {
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
     CommandScheduler.getInstance().registerSubsystem(colorWheelSubsystem);
-    sendableChooser = new SendableChooser<CommandGroupBase>();
-    //SendableChooser<autoCommand>.@setDefaultCommand("Drive and Shoot");
-    //SendableChooser.addOption("Drive", new AutoDrive());
-    //SendableChooser.addOption("Aim", new limelightAimCommand);
-    SmartDashboard.putData("Autonomous", sendableChooser);
     configureButtonBindings();
   }  
 
@@ -126,10 +119,10 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  /*public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return autoCommand;
-  }
+  }*/
 
   public Command getTeleopCommand(){
     return teleopDriveCommand;
