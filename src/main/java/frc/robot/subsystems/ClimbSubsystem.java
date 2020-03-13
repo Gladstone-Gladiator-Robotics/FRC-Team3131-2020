@@ -27,6 +27,9 @@ public class ClimbSubsystem extends SubsystemBase {
   public void stop(){
     running = false;
   }
+  public void reverse(){
+    climbMotor.set(-1);
+  }
 
   @Override
   public void periodic() {

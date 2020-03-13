@@ -29,7 +29,8 @@ public class LimelightAimCommand extends CommandBase {
   private static NetworkTableEntry driveConstant;
   private static NetworkTableEntry maxDriveSpeed;
   private static NetworkTableEntry maxSteerSpeed;
-  private static NetworkTableEntry targetAngle;
+  private static NetworkTableEntry targetAngleX;
+  private static NetworkTableEntry targetAngleY;
   
   private final DrivetrainSubsystem driveTrain;
   private boolean isFinished = false;
@@ -67,13 +68,13 @@ public class LimelightAimCommand extends CommandBase {
         .withWidget(BuiltInWidgets.kTextView)
         .withProperties(Map.of("min", -1, "max", 1))
         .getEntry();
-      targetAngle = 
-        tab.addPersistent("targetAngle", 2)
+      targetAngleX = 
+        tab.addPersistent("targetAngleX", 2)
         .withWidget(BuiltInWidgets.kTextView)
         .withProperties(Map.of("min", 0, "max", 10))
         .getEntry();
-    }
     addRequirements(driveTrain);
+    }
   }
 
   // Called when the command is initially scheduled.
@@ -97,7 +98,7 @@ public class LimelightAimCommand extends CommandBase {
     
     if (tv < 0.5){
       driveTrain.speed = 0;
-      driveTrain.rotation = -MAX_STEER;
+      driveTrain.rotation = -.55;
     } else if(ta < DESIRED_TARGET_AREA) {
       // Start with proportional steering
       
@@ -114,7 +115,7 @@ public class LimelightAimCommand extends CommandBase {
       }
       driveTrain.speed = drive_cmd;
     }
-    if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= targetAngle.getDouble(2)) {
+    if (ta >= DESIRED_TARGET_AREA && Math.abs(tx) <= targetAngleX.getDouble(2)){
       controller.setRumble(RumbleType.kLeftRumble, 1);
       Timer timer = new Timer();
       timer.schedule(new RumbleStopper(controller), 500);

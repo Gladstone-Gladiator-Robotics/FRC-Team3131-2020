@@ -8,42 +8,33 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.BallShooterSubsystem;
 import frc.robot.subsystems.FeedMotorSubsystem;
 
-public class BallShooterCommand extends CommandBase {
-  private final BallShooterSubsystem ballSystem;
-  private final FeedMotorSubsystem feedSystem;
-  private int time;
-  public BallShooterCommand(BallShooterSubsystem ballSystem, FeedMotorSubsystem feedSystem) {
-    this.ballSystem = ballSystem;
-    this.feedSystem = feedSystem;
-    addRequirements(ballSystem, feedSystem);
+public class FeedMotorEjectCommand extends CommandBase {
+  private final FeedMotorSubsystem subsystem;
+  /**
+   * Creates a new FeedMotorCommand.
+   */
+  public FeedMotorEjectCommand(FeedMotorSubsystem subsystem) {
+    this.subsystem = subsystem;
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    time = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(time < 25){
-      ballSystem.shoot();
-      time += 1;
-    }else{
-      ballSystem.shoot();
-      feedSystem.start();
-    }
+    subsystem.reverse();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    ballSystem.stop();
-    feedSystem.stop();
+    subsystem.stop();
   }
 
   // Returns true when the command should end.

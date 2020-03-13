@@ -27,7 +27,9 @@ public class FeedMotorSubsystem extends SubsystemBase {
   public void stop(){
     running = false;
   }
-
+  public void reverse(){
+    feedMotor.set(1);
+  }
   @Override
   public void periodic() {
     if (running == true){

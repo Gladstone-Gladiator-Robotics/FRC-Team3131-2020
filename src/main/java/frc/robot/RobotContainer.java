@@ -87,7 +87,6 @@ public class RobotContainer {
     ballShooterCommand = new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem);
     autoCommand = new SequentialCommandGroup(new LimelightAimCommand(driveTrainSubsystem, controller), 
       new BallShooterCommand(ballShooterSubsystem, feedMotorSubsystem));
-
     SmartDashboard.putBoolean("Is Practice Bot", isPracticeBot); 
     CommandScheduler.getInstance().setDefaultCommand(driveTrainSubsystem, teleopDriveCommand);
     CommandScheduler.getInstance().registerSubsystem(colorWheelSubsystem);
@@ -101,17 +100,16 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoysticpixyLightskButton}.
    */
   private void configureButtonBindings() {
-    aButton.toggleWhenActive(new IntakeMotorCommand(intakeSubsystem, feedMotorSubsystem));
-    bButton.whenHeld(new ClimbCommand(climbSubsystem));
-    xButton.whenHeld(new EjectCommand(intakeSubsystem));
-    //yButton.toggleWhenActive(new ColorWheelPistonCommand(colorWheelSubsystem, true));
-    yButton.toggleWhenActive(new FeedMotorCommand(feedMotorSubsystem));
+    aButton.whenHeld(new IntakeMotorCommand(intakeSubsystem/*, feedMotorSubsystem*/));
+    bButton.whenHeld(new EjectCommand(intakeSubsystem));
+    xButton.whenHeld(new FeedMotorCommand(feedMotorSubsystem));
+    yButton.whenHeld(new FeedMotorEjectCommand(feedMotorSubsystem));
     dPad.up.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, true));
     dPad.down.toggleWhenActive(new ExtendIntakeCommand(intakeSubsystem, false));
     leftBumper.whenHeld(limelightAimCommand);
     rightBumper.whenHeld(ballShooterCommand);
-    leftMiddleButton.toggleWhenActive(new RotateToFMSColorCommand(colorWheelSubsystem));
-    rightMiddleButton.toggleWhenActive(new RotateColorWheelThreeTimesCommand(colorWheelSubsystem));
+    leftMiddleButton.toggleWhenActive(new ClimbCommand(climbSubsystem));
+    //rightMiddleButton.toggleWhenActive(new RotateColorWheelThreeTimesCommand(colorWheelSubsystem));
   }
 
 

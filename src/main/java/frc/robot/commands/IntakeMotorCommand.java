@@ -13,11 +13,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeMotorCommand extends CommandBase {
   private final IntakeSubsystem intakeSystem;
-  private final FeedMotorSubsystem feedSystem; 
-  public IntakeMotorCommand(IntakeSubsystem intakeSystem, FeedMotorSubsystem feedSystem){
+  //private final FeedMotorSubsystem feedSystem; 
+  public IntakeMotorCommand(IntakeSubsystem intakeSystem/*, FeedMotorSubsystem feedSystem*/){
     this.intakeSystem = intakeSystem;
-    this.feedSystem = feedSystem;
-    addRequirements(intakeSystem, feedSystem);
+    //this.feedSystem = feedSystem;
+    addRequirements(intakeSystem/*, feedSystem*/);
   }
 
   // Called when the command is initially scheduled.
@@ -29,11 +29,11 @@ public class IntakeMotorCommand extends CommandBase {
   @Override
   public void execute() {
     intakeSystem.intakeMotor.set(-.14);
-    if (intakeSystem.ballSensor.getVoltage() > 1){
+    /*if (intakeSystem.ballSensor.getVoltage() > 1){
       feedSystem.start();
     }else{
       feedSystem.stop();
-    }
+    }*/
 
   }
 
