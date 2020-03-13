@@ -100,7 +100,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoysticpixyLightskButton}.
    */
   private void configureButtonBindings() {
-    aButton.whenHeld(new IntakeMotorCommand(intakeSubsystem/*, feedMotorSubsystem*/));
+    aButton.whenHeld(new IntakeMotorCommand(intakeSubsystem, feedMotorSubsystem));
     bButton.whenHeld(new EjectCommand(intakeSubsystem));
     xButton.whenHeld(new FeedMotorCommand(feedMotorSubsystem));
     yButton.whenHeld(new FeedMotorEjectCommand(feedMotorSubsystem));
